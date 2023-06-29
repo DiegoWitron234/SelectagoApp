@@ -79,7 +79,6 @@
             android:textSize="18dp"
             android:layout_gravity="center"
             android:layout_marginLeft="30dp"
-            android:onClick="fnEnviarCorreo"
             />
     </LinearLayout>
 
@@ -152,12 +151,13 @@
     </LinearLayout>
 
     <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:layout_marginLeft="20dp"
         android:layout_marginTop="40dp"
         android:textSize="15dp"
         android:layout_gravity="center"
+        android:gravity="bottom"
         android:text="SelectagoApp\n©2023 Selectago. Todos los derechos reservados"
         />
 

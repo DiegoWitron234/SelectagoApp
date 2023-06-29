@@ -1,5 +1,6 @@
 package com.example.selectagoapp;
 
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
@@ -13,6 +14,14 @@ public class Ayuda extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_ayuda);
+
+        ActionBar actionBar = getSupportActionBar();
+
+        if (actionBar != null) {
+            //Poner el ícono al ActionBar
+            actionBar.setIcon(R.drawable.tfl_logo);
+            actionBar.setDisplayShowHomeEnabled(true);
+        }
     }
 
     public void fnVerVideosTutoriales(View view) {
