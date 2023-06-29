@@ -8,10 +8,11 @@
     tools:context=".MainActivity">
 
     <ImageView
+        android:id="@+id/logoCuadrado"
         android:layout_height="wrap_content"
-        android:layout_width="wrap_content">
+        android:layout_width="wrap_content"
+        />
 
-    </ImageView>
 
     <TextView
         android:layout_width="wrap_content"
