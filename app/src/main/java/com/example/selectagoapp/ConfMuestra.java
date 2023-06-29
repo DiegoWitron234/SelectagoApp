@@ -11,12 +11,11 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class confMuestra extends AppCompatActivity {
-    final String[] frutos = new String[]{"Tipo de fruto","Limon"};
-    final String[] precision = new String[]{"Nivel de precisión","0.5","0.75","0.95"};
-    private Spinner opcionFrutas;
-    private Spinner opcionPrecision;
-    private TextView cantidadArboles;
+public class ConfMuestra extends AppCompatActivity {
+    final String[] frutos = new String[]{"Limon"};
+    final String[] precision = new String[]{"0.5","0.75","0.95"};
+    private Spinner opcionFrutas, opcionPrecision;
+    private EditText cantidadArboles;
     private String nivelPrecision, tipoFruta;
 
     @Override
@@ -24,13 +23,11 @@ public class confMuestra extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_conf_muestra);
         // Instanciando elementos de vista
-        opcionFrutas = (Spinner) findViewById(R.id.opcionFrutas);
-        opcionPrecision = (Spinner) findViewById(R.id.opcionPrecision);
+        opcionFrutas = findViewById(R.id.opcionFrutas);
+        opcionPrecision = findViewById(R.id.opcionPrecision);
         cantidadArboles = findViewById(R.id.intCantArbol);
         // Configuración de ArrayAdapters
         confArrayAdapters(opcionFrutas, opcionPrecision);
-        // Estableciendo evento Listener en los ArrayAdapters
-        eventoOpcionArray(opcionFrutas, opcionPrecision);
   }
 
     private void confArrayAdapters(Spinner opcionFrutas, Spinner opcionPrecision){
@@ -39,9 +36,13 @@ public class confMuestra extends AppCompatActivity {
         // ArrayAdapter de Frutas
         adapterFrutas.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         opcionFrutas.setAdapter(adapterFrutas);
+        opcionFrutas.setPrompt("Tipo de fruto");
         // ArrayAdapter de Precision
         adapterPrecision.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         opcionPrecision.setAdapter(adapterPrecision);
+        opcionPrecision.setPrompt("Nivel de precisión");
+        // Estableciendo evento Listener en los ArrayAdapters
+        eventoOpcionArray(opcionFrutas, opcionPrecision);
     }
 
     private void eventoOpcionArray(Spinner opcionFrutas, Spinner opcionPrecision){
@@ -72,7 +73,7 @@ public class confMuestra extends AppCompatActivity {
     }
 
     public void aceptarConfMu(View view) {
-        int numArboles = Integer.parseInt((String) cantidadArboles.getText());
-        Toast.makeText(this, numArboles + nivelPrecision + tipoFruta,Toast.LENGTH_LONG).show();
+        String numArboles = String.valueOf(cantidadArboles.getText());
+        Toast.makeText(this, numArboles + " " + nivelPrecision + " " + tipoFruta,Toast.LENGTH_LONG).show();
     }
 }
