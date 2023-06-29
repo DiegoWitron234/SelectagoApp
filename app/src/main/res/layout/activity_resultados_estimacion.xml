@@ -5,13 +5,13 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".ResultadosDeteccion">
+    tools:context=".ResultadosEstimacion">
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:text="Resultados de detección"
+        android:text="Resultados de estimación"
         android:textSize="30dp"
         android:layout_marginTop="30dp"
         android:textStyle="bold"
@@ -19,99 +19,85 @@
         />
 
     <TextView
-        android:id="@+id/txtNumeroArboles"
+        android:id="@+id/txtTipoFruto"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="left"
         android:layout_marginLeft="30dp"
         android:layout_marginTop="30dp"
         android:textColor="@color/black"
-        android:text="Número de árboles: "
+        android:text="Tipo De Fruto: "
         android:textSize="25dp"
         />
 
     <TextView
-        android:id="@+id/txtArbolesMuestreados"
+        android:id="@+id/txtEstimacionProduccion"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="left"
         android:layout_marginLeft="30dp"
         android:layout_marginTop="30dp"
         android:textColor="@color/black"
-        android:text="Árboles muestreados: "
+        android:text="Estimación de producción: "
         android:textSize="25dp"
         />
 
     <TextView
-        android:id="@+id/txtFrutosDetectados"
+        android:id="@+id/txtValorProduccion"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="left"
         android:layout_marginLeft="30dp"
         android:layout_marginTop="30dp"
         android:textColor="@color/black"
-        android:text="Frutos Detectados: "
+        android:text="Valor de producción: "
         android:textSize="25dp"
         />
 
     <TextView
-        android:id="@+id/txtFrutosArbol"
+        android:id="@+id/txtRecolectoresNecesarios"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="left"
         android:layout_marginLeft="30dp"
         android:layout_marginTop="30dp"
         android:textColor="@color/black"
-        android:text="Frutos por árbol: "
+        android:text="Recolectores necesarios: "
         android:textSize="25dp"
         />
 
     <TextView
+        android:id="@+id/txtNumeroCostales"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_gravity="left"
+        android:layout_marginLeft="30dp"
+        android:layout_marginTop="30dp"
+        android:textColor="@color/black"
+        android:text="Número de costales: "
+        android:textSize="25dp"
+        />
+
+    <TextView
+        android:id="@+id/txtNumeroTransportes"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="left"
+        android:layout_marginLeft="30dp"
+        android:layout_marginTop="30dp"
+        android:textColor="@color/black"
+        android:text="Número de transportes: "
+        android:textSize="25dp"
+        />
+
+    <Button
+        android:id="@+id/btnAceptarResultadosEstimacion"
+        android:layout_width="150dp"
+        android:layout_height="60dp"
+        android:backgroundTint="@color/verde"
         android:layout_gravity="center"
+        android:text="Aceptar"
         android:layout_marginTop="30dp"
-        android:gravity="center"
-        android:text="Producción aproximada del cultivo"
-        android:textColor="@color/black"
-        android:textSize="25dp"
-        android:textStyle="bold" />
-
-    <TextView
-        android:id="@+id/txtResultado"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:gravity="center"
-        android:layout_marginLeft="30dp"
-        android:layout_marginTop="30dp"
-        android:textColor="@color/black"
-        android:text="0 Frutos"
-        android:textSize="25dp"
         />
-
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        >
-        <Button
-            android:id="@+id/btnCancelarResultadosDeteccion"
-            android:layout_width="wrap_content"
-            android:layout_height="60dp"
-            android:backgroundTint="@color/rojo"
-            android:text="Cancelar"
-            android:layout_marginTop="30dp"
-            android:layout_marginRight="40dp"
-            />
-        <Button
-            android:id="@+id/btnAceptarResultadosDeteccion"
-            android:layout_width="wrap_content"
-            android:layout_height="60dp"
-            android:backgroundTint="@color/verde"
-            android:text="Aceptar"
-            android:layout_marginTop="30dp"
-            />
-    </LinearLayout>
 
 </LinearLayout>
