@@ -26,8 +26,14 @@
             android:name=".ResultadosDeteccion"
             android:exported="false" />
         <activity
-            android:name=".confMuestra"
-            android:exported="true" />
+            android:name=".ConfMuestra"
+            android:exported="false" />
+        <activity
+            android:name=".RealEstimacion"
+            android:exported="false" />
+        <activity
+            android:name=".ConsultaDatos"
+            android:exported="false" />
         <activity
             android:name=".MainActivity"
             android:exported="true">
