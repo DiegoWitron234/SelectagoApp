@@ -37,5 +37,14 @@ class MainActivity : AppCompatActivity() {
         startActivity(intent)
     }
 
+    fun fnRealizarEstimacion(view: View) {
+        val intent = Intent(this, RealEstimacion::class.java)
+        startActivity(intent)
+    }
+
+    fun fnConsultarDatos(view: View) {
+        val intent = Intent(this, ConsultaDatos::class.java)
+        startActivity(intent)
+    }
 
 }
