@@ -5,22 +5,67 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context=".MainActivity">
 
     <ImageView
         android:id="@+id/logoCuadrado"
-        android:layout_height="wrap_content"
-        android:layout_width="wrap_content"
+        android:layout_width="210dp"
+        android:layout_height="210dp"
+        android:layout_gravity="center"
+        android:layout_margin="30dp"
+        android:src="@drawable/logocuadrado" />
+
+
+    <Button
+        android:id="@+id/btnTomarMuestras"
+        android:layout_height="60dp"
+        android:layout_width="250dp"
+        android:backgroundTint="@color/verde"
+        android:text="Tomar muestras"
+        android:layout_gravity="center"
+        android:layout_marginBottom="5dp"
         />
 
+    <Button
+        android:id="@+id/btnRealizarEstimacion"
+        android:layout_height="60dp"
+        android:layout_width="250dp"
+        android:backgroundTint="@color/verde"
+        android:text="Realizar estimación"
+        android:layout_gravity="center"
+        android:layout_marginBottom="5dp"
+        />
 
-    <TextView
+    <Button
+        android:id="@+id/btnConsultarDatos"
+        android:layout_height="60dp"
+        android:layout_width="250dp"
+        android:backgroundTint="@color/verde"
+        android:text="Consultar datos"
+        android:layout_gravity="center"
+        android:layout_marginBottom="5dp"
+        />
+
+    <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Hello World!"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:layout_gravity="center"
+        >
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="60dp"
+            android:text="Ayuda"
+            android:backgroundTint="@color/celeste"
+            android:layout_marginRight="5dp"
+            />
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="60dp"
+            android:text="Acerca de"
+            android:backgroundTint="@color/celeste"
+            android:layout_marginLeft="5dp"
+            />
+    </LinearLayout>
 
 </LinearLayout>
