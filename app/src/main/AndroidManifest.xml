@@ -14,10 +14,13 @@
         android:theme="@style/Theme.SelectagoApp"
         tools:targetApi="31">
         <activity
+            android:name=".RealEstimacion"
+            android:exported="false" />
+        <activity
             android:name=".ResultadosDeteccion"
             android:exported="false" />
         <activity
-            android:name=".confMuestra"
+            android:name=".ConfMuestra"
             android:exported="true" />
         <activity
             android:name=".MainActivity"
