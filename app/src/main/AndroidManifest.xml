@@ -27,7 +27,13 @@
             android:exported="false" />
         <activity
             android:name=".ConfMuestra"
-            android:exported="true" />
+            android:exported="false" />
+        <activity
+            android:name=".ConsultaDatos"
+            android:exported="false"/>
+        <activity
+            android:name=".RealEstimacion"
+            android:exported="false"/>
         <activity
             android:name=".MainActivity"
             android:exported="true">

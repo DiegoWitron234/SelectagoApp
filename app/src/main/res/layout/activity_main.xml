@@ -27,14 +27,13 @@
         />
 
     <Button
-        android:layout_height="60dp"
         android:layout_width="250dp"
-        android:backgroundTint="@color/verde"
-        android:text="Realizar estimación"
+        android:layout_height="60dp"
         android:layout_gravity="center"
         android:layout_marginBottom="5dp"
+        android:backgroundTint="@color/verde"
         android:onClick="fnRealizarEstimacion"
-        />
+        android:text="Realizar estimación" />
 
     <Button
         android:layout_height="60dp"
