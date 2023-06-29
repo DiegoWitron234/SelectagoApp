@@ -9,7 +9,6 @@
     tools:context=".MainActivity">
 
     <ImageView
-        android:id="@+id/logoCuadrado"
         android:layout_width="210dp"
         android:layout_height="210dp"
         android:layout_gravity="center"
@@ -18,17 +17,16 @@
 
 
     <Button
-        android:id="@+id/btnTomarMuestras"
-        android:layout_height="60dp"
         android:layout_width="250dp"
-        android:backgroundTint="@color/verde"
-        android:text="Tomar muestras"
+        android:layout_height="60dp"
         android:layout_gravity="center"
         android:layout_marginBottom="5dp"
+        android:backgroundTint="@color/verde"
+        android:text="Tomar muestras"
+        android:onClick="fnTomarMuestras"
         />
 
     <Button
-        android:id="@+id/btnRealizarEstimacion"
         android:layout_height="60dp"
         android:layout_width="250dp"
         android:backgroundTint="@color/verde"
@@ -38,7 +36,6 @@
         />
 
     <Button
-        android:id="@+id/btnConsultarDatos"
         android:layout_height="60dp"
         android:layout_width="250dp"
         android:backgroundTint="@color/verde"
@@ -58,6 +55,7 @@
             android:text="Ayuda"
             android:backgroundTint="@color/celeste"
             android:layout_marginRight="5dp"
+            android:onClick="fnAyuda"
             />
         <Button
             android:layout_width="wrap_content"
@@ -65,6 +63,7 @@
             android:text="Acerca de"
             android:backgroundTint="@color/celeste"
             android:layout_marginLeft="5dp"
+            android:onClick="fnAcercaDe"
             />
     </LinearLayout>
 

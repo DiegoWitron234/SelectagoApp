@@ -1,8 +1,9 @@
 package com.example.selectagoapp
 
-import androidx.appcompat.app.AppCompatActivity
+import android.content.Intent
 import android.os.Bundle
-import androidx.appcompat.app.ActionBar
+import android.view.View
+import androidx.appcompat.app.AppCompatActivity
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -21,4 +22,20 @@ class MainActivity : AppCompatActivity() {
         }
         */
     }
+
+    fun fnTomarMuestras(view: View) {
+        val intent = Intent(this, confMuestra::class.java)
+        startActivity(intent)
+    }
+
+    fun fnAyuda(view: View) {
+        val intent = Intent(this, Ayuda::class.java)
+        startActivity(intent)
+    }
+    fun fnAcercaDe(view: View) {
+        val intent = Intent(this, AcercaDe::class.java)
+        startActivity(intent)
+    }
+
+
 }

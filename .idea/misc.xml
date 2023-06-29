@@ -5,6 +5,8 @@
       <map>
         <entry key="..\:/Users/maxim/AndroidStudioProjects/SelectagoApp/app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.1" />
         <entry key="..\:/Users/maxim/AndroidStudioProjects/SelectagoApp/app/src/main/res/drawable/ic_launcher_background.xml" value="0.1" />
+        <entry key="..\:/Users/maxim/AndroidStudioProjects/SelectagoApp/app/src/main/res/layout/activity_acerca_de.xml" value="0.20416666666666666" />
+        <entry key="..\:/Users/maxim/AndroidStudioProjects/SelectagoApp/app/src/main/res/layout/activity_ayuda.xml" value="0.20416666666666666" />
         <entry key="..\:/Users/maxim/AndroidStudioProjects/SelectagoApp/app/src/main/res/layout/activity_conf_muestra.xml" value="0.20416666666666666" />
         <entry key="..\:/Users/maxim/AndroidStudioProjects/SelectagoApp/app/src/main/res/layout/activity_main.xml" value="0.25" />
         <entry key="..\:/Users/maxim/AndroidStudioProjects/SelectagoApp/app/src/main/res/layout/activity_resultados_deteccion.xml" value="0.20416666666666666" />
