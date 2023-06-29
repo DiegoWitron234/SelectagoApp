@@ -73,6 +73,14 @@
                 />
         </RelativeLayout>
 
+        <Button
+            android:layout_width="250dp"
+            android:layout_height="60dp"
+            android:layout_gravity="center"
+            android:text="Consultar"
+            android:onClick="hallarDatos"
+        />
+
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -81,6 +89,14 @@
             android:text="Producción"
             android:textSize="20sp"
             android:textColor="@color/black"
+            />
+
+        <com.github.mikephil.charting.charts.LineChart
+            android:id="@+id/chProduccion"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:layout_marginHorizontal="20dp"
             />
 
         <TextView
@@ -93,6 +109,24 @@
             android:textColor="@color/black"
             />
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:layout_marginHorizontal="20dp"
+            >
+
+            <ListView
+                android:id="@+id/lstRFecha"
+                android:layout_width="190dp"
+                android:layout_height="wrap_content"
+                />
+            <ListView
+                android:id="@+id/lstRProducto"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                />
+        </LinearLayout>
 
     </LinearLayout>
 </ScrollView>
