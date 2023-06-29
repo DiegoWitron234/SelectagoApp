@@ -11,7 +11,6 @@ class MainActivity : AppCompatActivity() {
 
         val actionBar: ActionBar? = supportActionBar
 
-
         if (actionBar != null) {
             //Poner el ícono al ActionBar
             actionBar.setIcon(R.drawable.tfl_logo)
