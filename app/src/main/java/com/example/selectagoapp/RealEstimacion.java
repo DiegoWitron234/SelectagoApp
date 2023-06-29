@@ -1,5 +1,6 @@
 package com.example.selectagoapp;
 
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatSpinner;
 
@@ -23,6 +24,15 @@ public class RealEstimacion extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_real_estimacion);
+
+        ActionBar actionBar = getSupportActionBar();
+
+        if (actionBar != null) {
+            //Poner el ícono al ActionBar
+            actionBar.setIcon(R.drawable.tfl_logo);
+            actionBar.setDisplayShowHomeEnabled(true);
+        }
+
         // Instanciando elementos de la vista
         opcionFrutas = findViewById(R.id.spnTipoFruto);
         txtPrecioVenta = findViewById(R.id.txtPrecioVenta);
