@@ -9,6 +9,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        /*
         val actionBar: ActionBar? = supportActionBar
 
         if (actionBar != null) {
@@ -18,5 +19,6 @@ class MainActivity : AppCompatActivity() {
             //Poner la flecha para regresar a la parent activity
             actionBar.setDisplayHomeAsUpEnabled(true)
         }
+        */
     }
 }
