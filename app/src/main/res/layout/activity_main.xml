@@ -33,6 +33,7 @@
         android:text="Realizar estimación"
         android:layout_gravity="center"
         android:layout_marginBottom="5dp"
+        android:onClick="fnRealizarEstimacion"
         />
 
     <Button
@@ -42,6 +43,7 @@
         android:text="Consultar datos"
         android:layout_gravity="center"
         android:layout_marginBottom="5dp"
+        android:onClick="fnConsultarDatos"
         />
 
     <LinearLayout
