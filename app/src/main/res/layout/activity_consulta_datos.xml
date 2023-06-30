@@ -121,7 +121,7 @@
             android:textColor="@color/black"
             />
 
-        <ListView
+        <TableLayout
             android:id="@+id/lstRProduccion"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

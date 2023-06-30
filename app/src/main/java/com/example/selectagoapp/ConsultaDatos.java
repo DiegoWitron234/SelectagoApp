@@ -9,8 +9,9 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.DatePicker;
-import android.widget.ListView;
 import android.widget.Spinner;
+import android.widget.TableLayout;
+import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -30,11 +31,12 @@ import java.util.Locale;
 public class ConsultaDatos extends AppCompatActivity {
 
     final String[] frutos = new String[]{"limon"};
-    final ArrayList<String> produccion = new ArrayList<>();
+    public ArrayList<String> produccion = new ArrayList<>();
+    public ArrayList<String> fechas = new ArrayList<>();
     private String tipoFruta, fDesde, fHasta;
     private Spinner opcionFrutas;
     private TextView fechaDesde, fechaHasta;
-    private ListView lstRProduccion;
+    private TableLayout tablaDatos;
     private LineChart lineChart;
     private LineData lineData;
     private ArrayList<com.github.mikephil.charting.data.Entry> entradaLinea;
@@ -49,21 +51,24 @@ public class ConsultaDatos extends AppCompatActivity {
         fechaDesde = findViewById(R.id.inDesde);
         fechaHasta = findViewById(R.id.inHasta);
         lineChart = findViewById(R.id.chProduccion);
-        lstRProduccion = findViewById(R.id.lstRProduccion);
+        tablaDatos = findViewById(R.id.lstRProduccion);
         // INCORPORAR METODO QUE RESCATA LOS DATOS DE LA BASE DE DATOS
         obtenerDatos();
         // Configuración de Grafica
         confGrafica(lineChart);
         // Configuración de ArrayAdapters
-        confArrayAdapter(opcionFrutas, lstRProduccion);
-        // Configuración de DatePicker
-
+        confArrayAdapter(opcionFrutas);
+        // Configuración de Tabla de datos
+        confTable(tablaDatos);
     }
 
     private void obtenerDatos() {
-        produccion.add("14-05-2023: 10000");
-        produccion.add("10-06-2023: 23000");
-        produccion.add("05-07-2023: 17000");
+        produccion.add("10000");
+        produccion.add("23000");
+        produccion.add("17000");
+        fechas.add("14-05-2023");
+        fechas.add("10-06-2023");
+        fechas.add("05-07-2023");
         entradaLinea = new ArrayList<>();
         entradaLinea.add(new Entry(1f, 10000));
         entradaLinea.add(new Entry(2f, 23000));
@@ -79,16 +84,46 @@ public class ConsultaDatos extends AppCompatActivity {
         }
         return null;
     }
-    private void confArrayAdapter(Spinner aAFrutos, ListView lstRProduccion){
+
+    private void confArrayAdapter(Spinner aAFrutos){
         // Instanciando ArrayAdapters
         ArrayAdapter<String> adapterFrutas = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, frutos);
-        ArrayAdapter<String> adapterProduccion = new ArrayAdapter<>(this, android.R.layout.simple_expandable_list_item_1, produccion);
         // Configuración de Spinner Frutas
         adapterFrutas.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         aAFrutos.setAdapter(adapterFrutas);
         listenerArrayAdapter(aAFrutos);
-        // Configuración de ListView
-        lstRProduccion.setAdapter(adapterProduccion);
+    }
+
+    private void confTable(TableLayout tablaDatos){
+        // Agregar la cabecera de la tabla
+        TableRow headerRow = new TableRow(this);
+        headerRow.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT, TableRow.LayoutParams.WRAP_CONTENT));
+
+        TextView header1 = new TextView(this);
+        header1.setText("Cabecera 1");
+        headerRow.addView(header1);
+
+        TextView header2 = new TextView(this);
+        header2.setText("Cabecera 2");
+        headerRow.addView(header2);
+
+        tablaDatos.addView(headerRow);
+
+        // Agregar los datos a la tabla
+        for (int i = 0; i < produccion.size(); i++) {
+            TableRow dataRow = new TableRow(this);
+            dataRow.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT, TableRow.LayoutParams.WRAP_CONTENT));
+
+            TextView data1 = new TextView(this);
+            data1.setText(fechas.get(i));
+            dataRow.addView(data1);
+
+            TextView data2 = new TextView(this);
+            data2.setText(produccion.get(i));
+            dataRow.addView(data2);
+
+            tablaDatos.addView(dataRow);
+        }
     }
 
     public void fechaSeleccion(View view){
@@ -117,6 +152,7 @@ public class ConsultaDatos extends AppCompatActivity {
             datePickerDialog.show();
         }
     }
+
     private void listenerArrayAdapter(Spinner aAFrutos){
         aAFrutos.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -132,7 +168,6 @@ public class ConsultaDatos extends AppCompatActivity {
         });
     }
 
-
     private void confGrafica(LineChart lineChart){
         dataset = new LineDataSet(entradaLinea, "");
         lineData = new LineData(dataset);
@@ -141,6 +176,7 @@ public class ConsultaDatos extends AppCompatActivity {
         dataset.setValueTextColor(Color.BLACK);
         dataset.setValueTextSize(18f);
     }
+
     public void hallarDatos(View view){
         Toast.makeText(this, tipoFruta+fDesde+fHasta, Toast.LENGTH_SHORT).show();
     }
