@@ -2,14 +2,17 @@ package com.example.selectagoapp;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.DatePickerDialog;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.DatePicker;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.github.mikephil.charting.charts.LineChart;
@@ -28,12 +31,11 @@ import java.util.Locale;
 public class ConsultaDatos extends AppCompatActivity {
 
     final String[] frutos = new String[]{"limon"};
-    final ArrayList<String> fechas = new ArrayList<>();
     final ArrayList<String> produccion = new ArrayList<>();
     private String tipoFruta, fDesde, fHasta;
     private Spinner opcionFrutas;
-    private DatePicker fechaDesde, fechaHasta;
-    private ListView lstRFecha, lstRProduccion;
+    private TextView fechaDesde, fechaHasta;
+    private ListView lstRProduccion;
     private LineChart lineChart;
     private LineData lineData;
     private ArrayList<com.github.mikephil.charting.data.Entry> entradaLinea;
@@ -45,28 +47,24 @@ public class ConsultaDatos extends AppCompatActivity {
         setContentView(R.layout.activity_consulta_datos);
         // Instanciendo elementos de la vista
         opcionFrutas = findViewById(R.id.spnTipoFrutoCd);
-        fechaDesde = findViewById(R.id.dpDesde);
-        fechaHasta = findViewById(R.id.dpHasta);
+        fechaDesde = findViewById(R.id.inDesde);
+        fechaHasta = findViewById(R.id.inHasta);
         lineChart = findViewById(R.id.chProduccion);
-        lstRFecha = findViewById(R.id.lstRFecha);
-        lstRProduccion = findViewById(R.id.lstRProducto);
+        lstRProduccion = findViewById(R.id.lstRProduccion);
         // INCORPORAR METODO QUE RESCATA LOS DATOS DE LA BASE DE DATOS
         obtenerDatos();
         // Configuración de Grafica
         confGrafica(lineChart);
         // Configuración de ArrayAdapters
-        confArrayAdapter(opcionFrutas, lstRFecha, lstRProduccion);
+        confArrayAdapter(opcionFrutas, lstRProduccion);
         // Configuración de DatePicker
-        listenerDatePicker(fechaDesde, fechaHasta);
+
     }
 
     private void obtenerDatos() {
-        fechas.add("14-05-2023");
-        fechas.add("10-06-2023");
-        fechas.add("05-07-2023");
-        produccion.add("10000");
-        produccion.add("23000");
-        produccion.add("17000");
+        produccion.add("14-05-2023: 10000");
+        produccion.add("10-06-2023: 23000");
+        produccion.add("05-07-2023: 17000");
         entradaLinea = new ArrayList<>();
         entradaLinea.add(new Entry(1f, 10000));
         entradaLinea.add(new Entry(2f, 23000));
@@ -82,20 +80,44 @@ public class ConsultaDatos extends AppCompatActivity {
         }
         return null;
     }
-    private void confArrayAdapter(Spinner aAFrutos, ListView lstRFecha, ListView lstRProduccion){
+    private void confArrayAdapter(Spinner aAFrutos, ListView lstRProduccion){
         // Instanciando ArrayAdapters
         ArrayAdapter<String> adapterFrutas = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, frutos);
-        ArrayAdapter<String> adapterFechas = new ArrayAdapter<>(this, android.R.layout.simple_expandable_list_item_1, fechas);
         ArrayAdapter<String> adapterProduccion = new ArrayAdapter<>(this, android.R.layout.simple_expandable_list_item_1, produccion);
         // Configuración de Spinner Frutas
         adapterFrutas.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         aAFrutos.setAdapter(adapterFrutas);
         listenerArrayAdapter(aAFrutos);
-        // Configuración de ListViews
-        lstRFecha.setAdapter(adapterFechas);
+        // Configuración de ListView
         lstRProduccion.setAdapter(adapterProduccion);
     }
 
+    public void fechaSeleccion(View view){
+        // Obtener la fecha actual
+        Calendar calendar = Calendar.getInstance();
+        int year = calendar.get(Calendar.YEAR);
+        int mes = calendar.get(Calendar.MONTH);
+        int dia = calendar.get(Calendar.DAY_OF_MONTH);
+        if (view == fechaDesde){
+            DatePickerDialog datePickerDialog = new DatePickerDialog(this, new DatePickerDialog.OnDateSetListener() {
+                @Override
+                public void onDateSet(DatePicker datePicker, int i, int i1, int i2) {
+                    fDesde = i2+"/"+i1+"/"+i;
+                    fechaDesde.setText(fDesde);
+                }
+            },dia, mes, year);
+            datePickerDialog.show();
+        } else if (view == fechaHasta) {
+            DatePickerDialog datePickerDialog = new DatePickerDialog(this, new DatePickerDialog.OnDateSetListener() {
+                @Override
+                public void onDateSet(DatePicker datePicker, int i, int i1, int i2) {
+                    fHasta = i2+"/"+i1+"/"+i;
+                    fechaDesde.setText(fHasta);
+                }
+            },dia, mes, year);
+            datePickerDialog.show();
+        }
+    }
     private void listenerArrayAdapter(Spinner aAFrutos){
         aAFrutos.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -111,27 +133,6 @@ public class ConsultaDatos extends AppCompatActivity {
         });
     }
 
-    private void listenerDatePicker(DatePicker desde, DatePicker hasta){
-        // Obtener la fecha actual
-        Calendar calendar = Calendar.getInstance();
-        int year = calendar.get(Calendar.YEAR);
-        int month = calendar.get(Calendar.MONTH);
-        int dayOfMonth = calendar.get(Calendar.DAY_OF_MONTH);
-        desde.init(year, month, dayOfMonth, new DatePicker.OnDateChangedListener() {
-            @Override
-            public void onDateChanged(DatePicker datePicker, int i, int i1, int i2) {
-                fDesde = i2+"/"+i1+"/"+i;
-                Toast.makeText(ConsultaDatos.this, fDesde, Toast.LENGTH_SHORT).show();
-            }
-        });
-        hasta.init(year, month, dayOfMonth, new DatePicker.OnDateChangedListener() {
-            @Override
-            public void onDateChanged(DatePicker datePicker, int i, int i1, int i2) {
-                fHasta = i2+"/"+i1+"/"+i;
-                Toast.makeText(ConsultaDatos.this, fHasta, Toast.LENGTH_SHORT).show();
-            }
-        });
-    }
 
     private void confGrafica(LineChart lineChart){
         dataset = new LineDataSet(entradaLinea, "");
