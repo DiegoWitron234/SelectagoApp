@@ -142,7 +142,7 @@ public class ConsultaDatos extends AppCompatActivity {
                 @Override
                 public void onDateSet(DatePicker datePicker, int i, int i1, int i2) {
                     fHasta = i2+"/"+i1+"/"+i;
-                    fechaDesde.setText(fHasta);
+                    fechaHasta.setText(fHasta);
                 }
             },dia, mes, year);
             datePickerDialog.show();
