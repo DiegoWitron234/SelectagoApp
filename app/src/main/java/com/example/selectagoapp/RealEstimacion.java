@@ -2,8 +2,6 @@ package com.example.selectagoapp;
 
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.AppCompatSpinner;
-
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
@@ -14,7 +12,7 @@ import android.widget.Toast;
 
 public class RealEstimacion extends AppCompatActivity {
 
-    final String [] frutos = new String[]{"limon"};
+    final String[] frutos = new String[]{"limon"};
     private Spinner opcionFrutas;
     private EditText txtPrecioVenta, txtDia;
 
@@ -42,7 +40,8 @@ public class RealEstimacion extends AppCompatActivity {
         // Estableciendo evento Listener en los ArrayAdaptador
 
     }
-    private void confArrayAdapters(Spinner opcionFrutas){
+
+    private void confArrayAdapters(Spinner opcionFrutas) {
         ArrayAdapter<String> adapterFrutas = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, frutos);
         // ArrayAdapter de Frutas
         adapterFrutas.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -51,13 +50,14 @@ public class RealEstimacion extends AppCompatActivity {
         eventoOpcionArray(opcionFrutas);
     }
 
-    private void eventoOpcionArray(Spinner opcionFrutas){
+    private void eventoOpcionArray(Spinner opcionFrutas) {
         opcionFrutas.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 tipoFruta = frutos[i];
-                Toast.makeText(getApplicationContext(), "Fruto: "+tipoFruta, Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(), "Fruto: " + tipoFruta, Toast.LENGTH_LONG).show();
             }
+
             @Override
             public void onNothingSelected(AdapterView<?> adapterView) {
 
@@ -68,6 +68,6 @@ public class RealEstimacion extends AppCompatActivity {
     public void aceptarConfEst(View view) {
         String dias = String.valueOf(txtDia.getText());
         String precioVenta = String.valueOf(txtPrecioVenta.getText());
-        Toast.makeText(this, dias+" "+precioVenta+" "+tipoFruta, Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, dias + " " + precioVenta + " " + tipoFruta, Toast.LENGTH_SHORT).show();
     }
 }

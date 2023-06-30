@@ -1,8 +1,12 @@
 package com.example.selectagoapp;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 
+import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
@@ -58,31 +62,19 @@ public class ConsultaDatos extends AppCompatActivity {
         confGrafica(lineChart);
         // Configuración de ArrayAdapters
         confArrayAdapter(opcionFrutas);
-        // Configuración de Tabla de datos
-        confTable(tablaDatos);
     }
 
     private void obtenerDatos() {
-        produccion.add("10000");
+        /*produccion.add("10000");
         produccion.add("23000");
         produccion.add("17000");
         fechas.add("14-05-2023");
         fechas.add("10-06-2023");
-        fechas.add("05-07-2023");
+        fechas.add("05-07-2023");*/
         entradaLinea = new ArrayList<>();
         entradaLinea.add(new Entry(1f, 10000));
         entradaLinea.add(new Entry(2f, 23000));
         entradaLinea.add(new Entry(3f, 17000));
-    }
-
-    private Date getDate(String dateString) {
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
-        try {
-            return dateFormat.parse(dateString);
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-        return null;
     }
 
     private void confArrayAdapter(Spinner aAFrutos){
@@ -94,17 +86,21 @@ public class ConsultaDatos extends AppCompatActivity {
         listenerArrayAdapter(aAFrutos);
     }
 
-    private void confTable(TableLayout tablaDatos){
+    @SuppressLint("ResourceType")
+    private void cargaTabla(TableLayout tablaDatos){
         // Agregar la cabecera de la tabla
+        tablaDatos.removeAllViews();
         TableRow headerRow = new TableRow(this);
         headerRow.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT, TableRow.LayoutParams.WRAP_CONTENT));
 
         TextView header1 = new TextView(this);
-        header1.setText("Cabecera 1");
+        header1.setText("Fecha");
+        header1.setBackgroundColor(ContextCompat.getColor(this, Color.parseColor("#a2d001")));
         headerRow.addView(header1);
 
         TextView header2 = new TextView(this);
-        header2.setText("Cabecera 2");
+        header2.setText("Produccion");
+        header2.setBackgroundColor(ContextCompat.getColor(this, Color.parseColor("#a2d001")));
         headerRow.addView(header2);
 
         tablaDatos.addView(headerRow);
@@ -179,6 +175,36 @@ public class ConsultaDatos extends AppCompatActivity {
 
     public void hallarDatos(View view){
         Toast.makeText(this, tipoFruta+fDesde+fHasta, Toast.LENGTH_SHORT).show();
+        try (SQLiteHelperKotlin miBaseDeDatos = new SQLiteHelperKotlin(this)) {
+            SQLiteDatabase db = miBaseDeDatos.getWritableDatabase();
+            // Consultar datos de la tabla
+            // Configuración de consulta
+            String tableName = "detecciones";
+            String[] columns = null;
+            String selection = "fruto = ? AND fecha BETWEEN ? AND ?";
+            String[] selectionArgs = {tipoFruta, fDesde, fHasta};
+            String groupBy = null;
+            String having = null;
+            String orderBy = "fecha ASC"; // Reemplaza "column_name" con el nombre de la columna por la cual deseas ordenar
+            String limit = null;
+
+            Cursor cursor = db.query(tableName, columns, selection, selectionArgs, groupBy, having, orderBy, limit);
+            while (cursor.moveToNext()) {
+                if (cursor.moveToFirst()){
+                    @SuppressLint("Range") String fecha = cursor.getString(cursor.getColumnIndex("fecha"));
+                    @SuppressLint("Range") String fruto = cursor.getString(cursor.getColumnIndex("fruto"));
+                    // Hacer algo con los datos consultados
+                    produccion.add(fruto);
+                    fechas.add(fecha);
+                }else{
+                    Toast.makeText(this, "No se encontraron resultados", Toast.LENGTH_SHORT).show();
+                }
+            }
+            cursor.close();
+            cargaTabla(tablaDatos);
+        } catch (Exception ignored) {
+            Toast.makeText(this, "No se pudieron consultar los datos", Toast.LENGTH_SHORT).show();
+        }
     }
 
 
