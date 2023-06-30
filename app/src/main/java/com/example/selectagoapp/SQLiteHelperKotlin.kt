@@ -6,7 +6,7 @@ import android.database.sqlite.SQLiteOpenHelper
 
 val BD_NOMBRE : String = "registros"
 val VERSION : Int = 1
-val tabla : String = "detecciones"
+val TABLA : String = "detecciones"
 
 class SQLiteHelperKotlin(context: Context) : SQLiteOpenHelper(context, BD_NOMBRE, null, VERSION) {
     override fun onCreate(p0: SQLiteDatabase?) {
@@ -18,7 +18,8 @@ class SQLiteHelperKotlin(context: Context) : SQLiteOpenHelper(context, BD_NOMBRE
     override fun onUpgrade(p0: SQLiteDatabase?, p1: Int, p2: Int) {
         // Eliminar una tabla existente
         if (p1 < 2) {
-            p0?.execSQL("DROP TABLE IF EXISTS tabla_antigua");
+            p0?.execSQL("DROP TABLE IF EXISTS detecciones")
+            onCreate(p0)
         }
     }
 

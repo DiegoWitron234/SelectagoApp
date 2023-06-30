@@ -91,17 +91,22 @@ public class ConfMuestra extends AppCompatActivity {
 
         try (SQLiteHelperKotlin miBaseDeDatos = new SQLiteHelperKotlin(this)){
         SQLiteDatabase db = miBaseDeDatos.getWritableDatabase();
-            // Insertar datos en la tabla
-            ContentValues valores = new ContentValues();
-            valores.put("fruto", "Limon");
-            valores.put("fecha",fechasFormatos());
-            valores.put("cantidad_arboles", 10000);
-            valores.put("cantidad_parcelas", 270000);
-            long resultado = db.insert("tabla_ejemplo", null, valores);
-            Toast.makeText(this, String.valueOf(resultado), Toast.LENGTH_SHORT).show();
+            if  (db != null){
+                // Insertar datos en la tabla
+                ContentValues valores = new ContentValues();
+                valores.put("fruto", "Limon");
+                valores.put("fecha",fechasFormatos());
+                valores.put("cantidad_arboles", 10000);
+                valores.put("cantidad_parcelas", 270000);
+                long resultado = db.insert("detecciones", null, valores);
+                Toast.makeText(this, String.valueOf(resultado), Toast.LENGTH_SHORT).show();
+            }else{
+                Toast.makeText(this, "No se creó la base de datos", Toast.LENGTH_LONG).show();
+            }
         }catch(Exception ignored){
             Toast.makeText(this, "No se pudieron guardar los datos", Toast.LENGTH_SHORT).show();
         }
+
     }
 
     private String fechasFormatos(){
