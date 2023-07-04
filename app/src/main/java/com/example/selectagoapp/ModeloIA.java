@@ -16,20 +16,20 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 
 import com.example.selectagoapp.ml.Metadata;
-
 import org.tensorflow.lite.DataType;
 import org.tensorflow.lite.support.common.ops.NormalizeOp;
 import org.tensorflow.lite.support.image.ImageProcessor;
 import org.tensorflow.lite.support.image.TensorImage;
 import org.tensorflow.lite.support.image.ops.ResizeOp;
 import org.tensorflow.lite.support.tensorbuffer.TensorBuffer;
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+
 
 public class ModeloIA extends AppCompatActivity {
     Bitmap bitmap;
@@ -50,6 +50,7 @@ public class ModeloIA extends AppCompatActivity {
         resultados_txt = findViewById(R.id.resultados_txt);
         imagen = findViewById(R.id.imagen);
     }
+
 
     public void detectar(View view) {
         try {
@@ -72,14 +73,15 @@ public class ModeloIA extends AppCompatActivity {
                 resultados_txt.setText("No hay limones identificados");
             }
 
-            //Toast.makeText(this, "Resultado: "+getMax(outputFeature0.getFloatArray()), Toast.LENGTH_LONG).show();
+            Toast.makeText(this, "Resultado: "+getMax(outputFeature0.getFloatArray()), Toast.LENGTH_LONG).show();
             // Releases model resources if no longer used.
             model.close();
         } catch (IOException e) {
             // TODO Handle the exception
         }
-
     }
+
+
     private void etiquetas(){
         int cont = 0;
         try {
@@ -108,7 +110,7 @@ public class ModeloIA extends AppCompatActivity {
         ImageProcessor imageProcessor =
                 new ImageProcessor.Builder()
                         .add(new ResizeOp(512, 512, ResizeOp.ResizeMethod.NEAREST_NEIGHBOR))
-                        .add(new NormalizeOp(127.5F, 127.5F))
+                        .add(new NormalizeOp(-1, 1))
                         .build();
 
         // Crea un objeto TensorImage
@@ -134,9 +136,7 @@ public class ModeloIA extends AppCompatActivity {
                 imagen.setImageBitmap(bitmap);
             }
             catch(NullPointerException e){
-
             }
-
         }
         super.onActivityResult(requestCode, resultCode, data);
     }

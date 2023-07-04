@@ -16,6 +16,7 @@ import android.widget.Toast;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
 
 public class ConfMuestra extends AppCompatActivity {
     final String[] frutos = new String[]{"Limon"};
@@ -96,9 +97,10 @@ public class ConfMuestra extends AppCompatActivity {
                 ContentValues valores = new ContentValues();
                 valores.put("fruto", "Limon");
                 valores.put("fecha",fechasFormatos());
-                valores.put("cantidad_arboles", 10000);
-                valores.put("cantidad_parcelas", 270000);
+                valores.put("cantidad_arbol", 10000);
+                valores.put("cantidad_parcela", 270000);
                 long resultado = db.insert("detecciones", null, valores);
+
                 Toast.makeText(this, String.valueOf(resultado), Toast.LENGTH_SHORT).show();
             }else{
                 Toast.makeText(this, "No se creó la base de datos", Toast.LENGTH_LONG).show();
@@ -118,7 +120,7 @@ public class ConfMuestra extends AppCompatActivity {
         String pattern = "dd/MM/yyyy";
 
     // Crear un objeto SimpleDateFormat con el patrón
-        @SuppressLint("SimpleDateFormat") SimpleDateFormat dateFormat = new SimpleDateFormat(pattern);
+        SimpleDateFormat dateFormat = new SimpleDateFormat(pattern, Locale.getDefault());
 
     // Formatear la fecha
         return dateFormat.format(currentDate);
