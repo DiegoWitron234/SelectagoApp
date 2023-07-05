@@ -6,7 +6,6 @@ import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.graphics.Canvas;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
@@ -26,12 +25,7 @@ import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.formatter.IAxisValueFormatter;
-import com.github.mikephil.charting.renderer.XAxisRenderer;
 import com.github.mikephil.charting.utils.ColorTemplate;
-import com.github.mikephil.charting.utils.MPPointF;
-import com.github.mikephil.charting.utils.Transformer;
-import com.github.mikephil.charting.utils.Utils;
-import com.github.mikephil.charting.utils.ViewPortHandler;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -213,7 +207,7 @@ public class ConsultaDatos extends AppCompatActivity {
 
     public void hallarDatos(View view){
         //Toast.makeText(this, "FRUTO: "+tipoFruta+" INICIO: "+fDesde+" FINAL: "+fHasta,
-          //      Toast.LENGTH_SHORT).show();
+        //      Toast.LENGTH_SHORT).show();
         ArrayList<String> produccion = new ArrayList<>();
         ArrayList<String> fechas = new ArrayList<>();
         String [] selectionArgs = {tipoFruta, fDesde, fHasta};
@@ -226,7 +220,7 @@ public class ConsultaDatos extends AppCompatActivity {
         //String consulta = "select fecha, cantidad_parcela from detecciones WHERE fruto = ? AND fecha BETWEEN ? AND ? ORDER BY fecha DESC";
         try{
             String consulta = "select fecha, cantidad_parcela from detecciones WHERE fruto = ? " +
-                    "AND fecha BETWEEN ? AND ?";
+                    "AND fecha BETWEEN ? AND ? ORDER BY fecha DESC";
             Cursor cursor = db.rawQuery(consulta, selectionArgs);
             if (cursor.moveToFirst()){
                 do{

@@ -3,7 +3,6 @@ package com.example.selectagoapp;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.annotation.SuppressLint;
 import android.content.ContentValues;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
@@ -64,7 +63,7 @@ public class ConfMuestra extends AppCompatActivity {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 tipoFruta = frutos[i];
-                Toast.makeText(getApplicationContext(),"Fruto: "+ tipoFruta, Toast.LENGTH_LONG).show();
+                //Toast.makeText(getApplicationContext(),"Fruto: "+ tipoFruta, Toast.LENGTH_LONG).show();
             }
             @Override
             public void onNothingSelected(AdapterView<?> adapterView) {
@@ -76,7 +75,7 @@ public class ConfMuestra extends AppCompatActivity {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 nivelPrecision = precision[i];
-                Toast.makeText(getApplicationContext(),"Precisión:"+ nivelPrecision, Toast.LENGTH_LONG).show();
+                //Toast.makeText(getApplicationContext(),"Precisión:"+ nivelPrecision, Toast.LENGTH_LONG).show();
             }
 
             @Override
@@ -84,6 +83,21 @@ public class ConfMuestra extends AppCompatActivity {
 
             }
         });
+    }
+
+    private String fechasFormatos(){
+
+        // Obtener la fecha actual
+        Date currentDate = new Date();
+
+        // Definir el patrón de formato deseado
+        String pattern = "dd/MM/yyyy";
+
+        // Crear un objeto SimpleDateFormat con el patrón
+        SimpleDateFormat dateFormat = new SimpleDateFormat(pattern, Locale.getDefault());
+
+        // Formatear la fecha
+        return dateFormat.format(currentDate);
     }
 
     public void aceptarConfMu(View view) {
@@ -95,34 +109,17 @@ public class ConfMuestra extends AppCompatActivity {
             if  (db != null){
                 // Insertar datos en la tabla
                 ContentValues valores = new ContentValues();
-                valores.put("fruto", "Limon");
+                valores.put("fruto", tipoFruta);
                 valores.put("fecha",fechasFormatos());
-                valores.put("cantidad_arbol", 10000);
-                valores.put("cantidad_parcela", 270000);
-                long resultado = db.insert("detecciones", null, valores);
-
-                Toast.makeText(this, String.valueOf(resultado), Toast.LENGTH_SHORT).show();
+                valores.put("cantidad_arbol", String.valueOf(cantidadArboles));
+                //valores.put("cantidad_parcela", 270000);
+                db.insert("detecciones", null, valores);
             }else{
                 Toast.makeText(this, "No se creó la base de datos", Toast.LENGTH_LONG).show();
             }
         }catch(Exception ignored){
             Toast.makeText(this, "No se pudieron guardar los datos", Toast.LENGTH_SHORT).show();
         }
-
     }
 
-    private String fechasFormatos(){
-
-    // Obtener la fecha actual
-        Date currentDate = new Date();
-
-    // Definir el patrón de formato deseado
-        String pattern = "dd/MM/yyyy";
-
-    // Crear un objeto SimpleDateFormat con el patrón
-        SimpleDateFormat dateFormat = new SimpleDateFormat(pattern, Locale.getDefault());
-
-    // Formatear la fecha
-        return dateFormat.format(currentDate);
-    }
 }

@@ -2,6 +2,9 @@ package com.example.selectagoapp;
 
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+
+import android.content.ContentValues;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
@@ -66,8 +69,27 @@ public class RealEstimacion extends AppCompatActivity {
     }
 
     public void aceptarConfEst(View view) {
+
+
         String dias = String.valueOf(txtDia.getText());
         String precioVenta = String.valueOf(txtPrecioVenta.getText());
         Toast.makeText(this, dias + " " + precioVenta + " " + tipoFruta, Toast.LENGTH_SHORT).show();
+    }
+
+    private void actualizarRegistro(int parcela){
+        // Instanciando clase de la base de datos
+        try(SQLiteHelperKotlin mydb = new SQLiteHelperKotlin(this)){
+            SQLiteDatabase db = mydb.getWritableDatabase();
+
+            ContentValues values = new ContentValues();
+            values.put("cantidad_parcela", parcela);
+
+            String whereClause = "fruto = ? ORDER BY id_deteccion DESC LIMIT 1"; // Condición para seleccionar registros con celda vacía
+            String[] whereArgs = {tipoFruta}; // Argumentos para la cláusula WHERE si es necesario
+
+            int numRowsUpdated = db.update("detecciones", values, whereClause, whereArgs);
+        } catch (Exception e){
+            e.printStackTrace();
+        }
     }
 }
