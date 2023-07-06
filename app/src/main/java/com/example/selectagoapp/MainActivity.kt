@@ -23,7 +23,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun fnTomarMuestras(view: View) {
-        val intent = Intent(this, TFModelo::class.java)
+        val intent = Intent(this, ConfMuestra::class.java)
         startActivity(intent)
     }
 

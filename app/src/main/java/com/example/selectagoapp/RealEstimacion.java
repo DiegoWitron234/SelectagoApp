@@ -4,6 +4,8 @@ import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.ContentValues;
+import android.content.Intent;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.view.View;
@@ -15,10 +17,10 @@ import android.widget.Toast;
 
 public class RealEstimacion extends AppCompatActivity {
 
-    final String[] frutos = new String[]{"limon"};
+    final String[] frutos = new String[]{"Limon"};
+    private String transporte [][] = new String[4][2];
     private Spinner opcionFrutas;
     private EditText txtPrecioVenta, txtDia;
-
     private String tipoFruta;
 
     @Override
@@ -40,8 +42,8 @@ public class RealEstimacion extends AppCompatActivity {
         txtDia = findViewById(R.id.txtDias);
         //Configuración de ArrayAdapter
         confArrayAdapters(opcionFrutas);
-        // Estableciendo evento Listener en los ArrayAdaptador
-
+        // Instanciandos transportes
+        datos_transporte();
     }
 
     private void confArrayAdapters(Spinner opcionFrutas) {
@@ -58,9 +60,8 @@ public class RealEstimacion extends AppCompatActivity {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 tipoFruta = frutos[i];
-                Toast.makeText(getApplicationContext(), "Fruto: " + tipoFruta, Toast.LENGTH_LONG).show();
+                //Toast.makeText(getApplicationContext(), "Fruto: " + tipoFruta, Toast.LENGTH_LONG).show();
             }
-
             @Override
             public void onNothingSelected(AdapterView<?> adapterView) {
 
@@ -69,27 +70,105 @@ public class RealEstimacion extends AppCompatActivity {
     }
 
     public void aceptarConfEst(View view) {
+        String [] valores = registro();
+        System.out.println("CONSULTA: "+valores[0]);
+        double precioVenta = Double.parseDouble(String.valueOf(txtPrecioVenta.getText()));
+        int dias = Integer.parseInt(String.valueOf(txtDia.getText()));
+        double capacidad_costal = 20;
+        double gramoFruto = 80;
+        int costalesDiarios = 50;
+        String traslado;
 
+        double pesoTotal = (Double.parseDouble(valores[0]) * gramoFruto) / 1000;
+        double costales = pesoTotal / capacidad_costal;
+        double valorProduccion = pesoTotal * precioVenta;
+        double diasHombre = Math.round(costales / costalesDiarios);
+        double trabajadores = diasHombre / dias;
+        double tonelada = pesoTotal/1000;
+        String[]camiones= medio_traslado(pesoTotal/1000);
 
-        String dias = String.valueOf(txtDia.getText());
-        String precioVenta = String.valueOf(txtPrecioVenta.getText());
-        Toast.makeText(this, dias + " " + precioVenta + " " + tipoFruta, Toast.LENGTH_SHORT).show();
+        if (camiones[0].equals("Trailer")){
+            if(!camiones[1].equals("1.0")){
+                traslado =(int) Double.parseDouble(camiones[1])+" Trailers de 25 t";
+            }else{
+                traslado = "1 Trailer de 25 t";
+            }
+        }else{
+            traslado = "1 "+ camiones[0];
+        }
+
+        Intent intent = new Intent (this, ResultadosEstimacion.class);
+        intent.putExtra("fruto", tipoFruta);
+        intent.putExtra("produccion", valores[0]);
+        intent.putExtra("valor", valorProduccion);
+        intent.putExtra("recolectores", (int) Math.ceil(trabajadores));
+        intent.putExtra("costales", (int) Math.ceil(costales));
+        intent.putExtra("transporte", traslado);
+        intent.putExtra("tonelada", tonelada);
+        startActivity(intent);
     }
 
-    private void actualizarRegistro(int parcela){
-        // Instanciando clase de la base de datos
-        try(SQLiteHelperKotlin mydb = new SQLiteHelperKotlin(this)){
-            SQLiteDatabase db = mydb.getWritableDatabase();
-
-            ContentValues values = new ContentValues();
-            values.put("cantidad_parcela", parcela);
-
-            String whereClause = "fruto = ? ORDER BY id_deteccion DESC LIMIT 1"; // Condición para seleccionar registros con celda vacía
+    private String[] registro(){
+        String[] datos = new String[2];
+        SQLiteHelperKotlin mydb = new SQLiteHelperKotlin(this);
+        SQLiteDatabase db = mydb.getReadableDatabase();
+        // ESTRUCTURA DE CONSULTA
+        System.out.println("FRUTO:" + tipoFruta);
+        try{
             String[] whereArgs = {tipoFruta}; // Argumentos para la cláusula WHERE si es necesario
-
-            int numRowsUpdated = db.update("detecciones", values, whereClause, whereArgs);
-        } catch (Exception e){
+            String consulta = "select cantidad_parcela, fecha from detecciones WHERE fruto = ? ORDER BY fecha DESC LIMIT 1";
+            Cursor cursor = db.rawQuery(consulta, whereArgs);
+            if (cursor.moveToFirst()){
+                do{
+                    System.out.println("VALOR: "+cursor.getString(0));
+                    datos[0] = cursor.getString(0);
+                }while (cursor.moveToNext());
+            }else{
+                Toast.makeText(this, "No se realizo la consulta", Toast.LENGTH_LONG).show();
+            }
+            cursor.close();
+            return datos;
+        }catch (Exception e){
             e.printStackTrace();
+            return null;
+        }finally {
+            if (db != null && db.isOpen()){
+                db.close();
+            }
         }
+    }
+
+    private void datos_transporte(){
+        //TIPO
+        transporte[0][0]="Camioneta de Carga";
+        transporte[1][0]="Rabón";
+        transporte[2][0]="Torton";
+        transporte[3][0]="Trailer";
+        // CAPACIDAD MAXIMA
+        transporte[0][1]="3.5";
+        transporte[1][1]="15";
+        transporte[2][1]="20";
+        transporte[3][1]="25";
+    }
+
+    private String[] medio_traslado(double estimacionToneladas) {
+        double cantidad_transporte = 1, max;
+        String[] camiones = new String[2];
+        int i;
+        for (i = 0; i < 4; i++) {
+            max = Double.parseDouble(transporte[i][1]);
+            if (estimacionToneladas <= max) {
+                break;
+            } else {
+                if (max == 25) {
+                    cantidad_transporte = Math.ceil(estimacionToneladas / max);
+                    break;
+                }
+            }
+        }
+        camiones[0] = transporte[i][0];
+        camiones[1] = "" + cantidad_transporte;
+
+        return camiones;
     }
 }

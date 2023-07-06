@@ -1,5 +1,6 @@
 package com.example.selectagoapp;
 
+import android.content.Intent;
 import android.content.res.AssetFileDescriptor;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
@@ -9,13 +10,13 @@ import android.graphics.RectF;
 import android.graphics.Typeface;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
-import org.tensorflow.lite.Interpreter;
 
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -26,27 +27,25 @@ import java.util.Objects;
 
 public class TFModelo extends AppCompatActivity {
     ImageView visualizacion;
-    TextView datos;
-    private Interpreter interpreter;
-    private static final int NUM_THREADS = 2;
+    TextView arbolesPendientes;
     private Bitmap inputImage;
+    private int detecciones = 0, promedio, arboles, muestra, pendientes = 1;
+    private String fruto;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tfmodelo);
         visualizacion = findViewById(R.id.resDeteccion);
-        datos = findViewById(R.id.datos);
-        try {
-            // Cargar el modelo TFLite al iniciar la actividad
-            Inferencias inModel = new Inferencias(cargaModelos("assets.tflite"));
-            // Cargando imagen
-            inputImage = ((BitmapDrawable)Objects.requireNonNull(ContextCompat.getDrawable(this, R.drawable.limon))).getBitmap();
-            List<DetectionResult> resultado = inModel.detectar(inputImage);
-            verDeteccion(resultado);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+        arbolesPendientes = findViewById(R.id.arbolesPendientes);
+
+        // Rescatando datos de activity pasada
+        Intent intent = getIntent();
+        fruto = intent.getStringExtra("fruto");
+        arboles = intent.getIntExtra("arboles", 0);
+        muestra = intent.getIntExtra("muestra", 1);
+
+        arbolesPendientes.setText("Arboles: "+pendientes+"/"+muestra);
     }
 
     private MappedByteBuffer cargaModelos(String ruta) throws IOException {
@@ -70,6 +69,7 @@ public class TFModelo extends AppCompatActivity {
         paint.setStrokeWidth(2.0f);
         paint.setTextSize(20.0f);
         paint.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.BOLD));
+
         System.out.println(resultado.size());
         // Dibujar los bounding boxes y las etiquetas en la imagen
         for (DetectionResult result : resultado) {
@@ -91,6 +91,40 @@ public class TFModelo extends AppCompatActivity {
 
         // Actualizar el ImageView con el resultado dibujado
         visualizacion.setImageBitmap(resultBitmap);
-        datos.setText(resultado.size()+"");
+        //datos.setText(String.valueOf(resultado.size()));
+    }
+
+    public void dSiguiente(View view) {
+        try {
+            // Cargar el modelo TFLite al iniciar la actividad
+            Inferencias inModel = new Inferencias(cargaModelos("assets.tflite"));
+            // Cargando imagen
+            inputImage = ((BitmapDrawable)Objects.requireNonNull(ContextCompat.getDrawable(this, R.drawable.limon))).getBitmap();
+            List<DetectionResult> resultado = inModel.detectar(inputImage);
+            detecciones = detecciones + resultado.size();
+            verDeteccion(resultado);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+        promedio = detecciones / muestra;
+        int cantidadFrutos = promedio * arboles;
+        System.out.println("ESTIMACION: "+cantidadFrutos);
+        Intent intent = new Intent(this, ResultadosDeteccion.class);
+        intent.putExtra("fruto", fruto);
+        intent.putExtra("arboles", arboles);
+        intent.putExtra("muestra", muestra);
+        intent.putExtra("detecciones", detecciones);
+        intent.putExtra("promedio", promedio);
+        intent.putExtra("estimacion", cantidadFrutos);
+        startActivity(intent);
+    }
+
+    public double estimacion (){
+        int gramoFruto = 80; // <- 80 gramos
+        double cantidadFrutos = promedio * arboles;
+        double pesoTotal = (cantidadFrutos * gramoFruto) / 1000;
+        double estimacionToneladas = pesoTotal / 1000;
+        return estimacionToneladas;
     }
 }

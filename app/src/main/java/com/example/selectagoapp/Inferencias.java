@@ -53,14 +53,12 @@ public class Inferencias {
 
         // RESULTADOS
         System.out.println("SCORES: "+ Arrays.deepToString(scores));
-        System.out.println("DETECCIONES: "+ Arrays.deepToString(boundingBoxes));
+        System.out.println("UBICACIONES: "+ Arrays.deepToString(boundingBoxes));
         System.out.println("NUM DETECCIONES: "+ Arrays.toString(numDetecciones));
         System.out.println("CATEGORIA: "+ Arrays.deepToString(categoria));
 
-        List<DetectionResult> resultados = obtenerResultadosDeteccion(scores,
+        return obtenerResultadosDeteccion(scores,
                 boundingBoxes, categoria, numDetecciones, imageAjustada.getBitmap());
-
-        return resultados;
     }
 
     private TensorImage ajusteImagen(Bitmap bitmap){
