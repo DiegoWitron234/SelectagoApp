@@ -10,6 +10,7 @@ import android.graphics.Typeface;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
@@ -25,6 +26,7 @@ import java.util.Objects;
 
 public class TFModelo extends AppCompatActivity {
     ImageView visualizacion;
+    TextView datos;
     private Interpreter interpreter;
     private static final int NUM_THREADS = 2;
     private Bitmap inputImage;
@@ -34,6 +36,7 @@ public class TFModelo extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tfmodelo);
         visualizacion = findViewById(R.id.resDeteccion);
+        datos = findViewById(R.id.datos);
         try {
             // Cargar el modelo TFLite al iniciar la actividad
             Inferencias inModel = new Inferencias(cargaModelos("assets.tflite"));
@@ -67,7 +70,7 @@ public class TFModelo extends AppCompatActivity {
         paint.setStrokeWidth(2.0f);
         paint.setTextSize(20.0f);
         paint.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.BOLD));
-
+        System.out.println(resultado.size());
         // Dibujar los bounding boxes y las etiquetas en la imagen
         for (DetectionResult result : resultado) {
 
@@ -88,5 +91,6 @@ public class TFModelo extends AppCompatActivity {
 
         // Actualizar el ImageView con el resultado dibujado
         visualizacion.setImageBitmap(resultBitmap);
+        datos.setText(resultado.size()+"");
     }
 }
