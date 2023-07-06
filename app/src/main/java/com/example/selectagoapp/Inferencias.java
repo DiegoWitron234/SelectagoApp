@@ -57,6 +57,7 @@ public class Inferencias {
         System.out.println("NUM DETECCIONES: "+ Arrays.toString(numDetecciones));
         System.out.println("CATEGORIA: "+ Arrays.deepToString(categoria));
 
+        interpreter.close();
         return obtenerResultadosDeteccion(scores,
                 boundingBoxes, categoria, numDetecciones, imageAjustada.getBitmap());
     }

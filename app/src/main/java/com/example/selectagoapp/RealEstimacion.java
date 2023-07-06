@@ -72,14 +72,14 @@ public class RealEstimacion extends AppCompatActivity {
     public void aceptarConfEst(View view) {
         String [] valores = registro();
         System.out.println("CONSULTA: "+valores[0]);
-        double precioVenta = Double.parseDouble(String.valueOf(txtPrecioVenta.getText()));
+        double precioVenta = Double.parseDouble(String.valueOf(txtPrecioVenta.getText())); // Por KIlo
         int dias = Integer.parseInt(String.valueOf(txtDia.getText()));
         double capacidad_costal = 20;
         double gramoFruto = 80;
         int costalesDiarios = 50;
         String traslado;
 
-        double pesoTotal = (Double.parseDouble(valores[0]) * gramoFruto) / 1000;
+        double pesoTotal = (Double.parseDouble(valores[0]) * gramoFruto) / 1000; // < EN KILOS
         double costales = pesoTotal / capacidad_costal;
         double valorProduccion = pesoTotal * precioVenta;
         double diasHombre = Math.round(costales / costalesDiarios);
