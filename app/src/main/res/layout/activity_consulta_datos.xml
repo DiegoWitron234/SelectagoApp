@@ -65,7 +65,7 @@
                 android:textColor="@color/black"
                 android:layout_toRightOf="@id/txtDesde"
                 android:onClick="fechaSeleccion"
-                android:background="@drawable/cuadroeleccion"
+
                 />
 
             <TextView
@@ -80,7 +80,7 @@
                 android:textColor="@color/black"
                 android:layout_below="@id/txtDesde"
                 android:layout_toRightOf="@id/txtHasta"
-                android:background="@drawable/cuadroeleccion"
+
                 />
 
         </RelativeLayout>

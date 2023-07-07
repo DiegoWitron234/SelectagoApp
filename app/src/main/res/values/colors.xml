@@ -11,4 +11,12 @@
     <color name="verde_claro">#a2d001</color>
     <color name="celeste">#5b9bd5</color>
     <color name="rojo">#c00000</color>
+
+    <color name="bounding_box_color">#FF6F00</color>
+    <color name="toolbar_background">#EEEEEE</color>
+    <color name="bottom_sheet_background">#EEEEEE</color>
+    <color name="bottom_sheet_text_color">@android:color/black</color>
+    <color name="icActive">#FFFFFFFF</color>
+    <color name="icFocused">#DDFFFFFF</color>
+    <color name="icPressed">#AAFFFFFF</color>
 </resources>
