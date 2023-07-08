@@ -95,7 +95,7 @@ public class ConfMuestra extends AppCompatActivity {
                 Math.pow(margenError,2) + Math.pow(nivelConfianza,2) * estimacion * (1-estimacion));
 
         System.out.println("MUESTRA: "+ tMuestra);
-        /*Intent intent = new Intent(this, TFModelo.class);
+        /*Intent intent = new Intent(this, Deteccion.class);
         intent.putExtra("fruto",tipoFruta);
         intent.putExtra("arboles", numArboles);
         intent.putExtra("muestra", (int)tMuestra);

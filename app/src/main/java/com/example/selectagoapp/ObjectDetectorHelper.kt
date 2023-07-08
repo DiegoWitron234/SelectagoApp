@@ -4,6 +4,7 @@ import android.content.Context
 import android.graphics.Bitmap
 import android.os.SystemClock
 import android.util.Log
+import android.widget.Toast
 import org.tensorflow.lite.gpu.CompatibilityList
 import org.tensorflow.lite.support.image.ImageProcessor
 import org.tensorflow.lite.support.image.TensorImage
@@ -84,6 +85,7 @@ class ObjectDetectorHelper(
                 "Object detector failed to initialize. See error logs for details"
             )
             Log.e("Test", "TFLite failed to load model with error: " + e.message)
+            Toast.makeText(context, "Falló la inicialización del detector", Toast.LENGTH_SHORT).show()
         }
     }
 
