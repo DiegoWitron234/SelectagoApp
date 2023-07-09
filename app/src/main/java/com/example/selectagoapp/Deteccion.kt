@@ -5,6 +5,13 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import android.graphics.Canvas
+import android.graphics.Color
+import android.graphics.Paint
+import android.graphics.RectF
+import android.graphics.Typeface
+import android.graphics.drawable.BitmapDrawable
+import android.graphics.drawable.Drawable
 import android.os.Build
 import android.os.Bundle
 import android.provider.MediaStore
@@ -16,11 +23,16 @@ import android.widget.Toast
 import androidx.appcompat.app.ActionBar
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import com.example.selectagoapp.ObjectDetectorHelper.DetectorListener
+import org.tensorflow.lite.DataType
+import org.tensorflow.lite.support.common.ops.NormalizeOp
+import org.tensorflow.lite.support.image.ImageProcessor
+import org.tensorflow.lite.support.image.TensorImage
+import org.tensorflow.lite.support.image.ops.ResizeOp
 import org.tensorflow.lite.task.vision.detector.Detection
-
-
-
+import java.io.IOException
+import java.util.Objects
 
 
 class Deteccion : AppCompatActivity() {
@@ -74,6 +86,7 @@ class Deteccion : AppCompatActivity() {
                 imageWidth: Int
             ) {
                 var categoria: String? = null
+                var boundBox: MutableList<RectF>? = ArrayList();
                 var puntaje: Float? = null
                 var cantidad: Int? = null
                 // Manejar los resultados de detección
@@ -93,6 +106,9 @@ class Deteccion : AppCompatActivity() {
                             // Guarda la categoría y el puntaje en las variables correspondientes
                             categoria = primeraCategoria.label
                             puntaje = primeraCategoria.score
+                            if (boundBox != null) {
+                                boundBox.add(result.boundingBox)
+                            }
                             //puntajes.add(puntaje!!)
                             // Rompe el bucle si solo deseas obtener la categoría y el puntaje del primer objeto detectado
                             //break
@@ -106,6 +122,9 @@ class Deteccion : AppCompatActivity() {
                 println("Cantidad: $cantidad")
                 println("Categoría: $categoria")
                 println("Puntaje: $puntaje")
+                if (boundBox != null) {
+                    dibujarCuadros(boundBox)
+                }
             }
         }
 
@@ -127,13 +146,12 @@ class Deteccion : AppCompatActivity() {
         objectDetectorHelper.clearObjectDetector()
     }
 
-
+    // ---------------------------------- METODOS DE CAMARA ----------------------------------------
     fun seleccionar(view: View?) {
         imagenSeleccionada = 0
         val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
         startActivityForResult(intent, 11)
     }
-
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         if(requestCode == 11 && resultCode == RESULT_OK){
@@ -149,7 +167,6 @@ class Deteccion : AppCompatActivity() {
         }
         super.onActivityResult(requestCode, resultCode, data)
     }
-
 
     fun permisoCamera() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
@@ -178,7 +195,7 @@ class Deteccion : AppCompatActivity() {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
     }
 
-
+   // ----------------------------------------------------------------------------------------------
     fun detectar(view: View) {
         //Función del botón que analiza la imagen
         if(bitmap != null){
@@ -230,4 +247,21 @@ class Deteccion : AppCompatActivity() {
         return Bitmap.createScaledBitmap(bitmap, scaledWidth, scaledHeight, true)
     }
 
-}
+    fun dibujarCuadros(boundingBoxes : MutableList<RectF>){
+        // Crear un nuevo bitmap mutable para dibujar las cajas delimitadoras y etiquetas
+        val resultBitmap: Bitmap? = bitmap?.copy(Bitmap.Config.ARGB_8888, true)
+        // Obtener el objeto Canvas para dibujar en el bitmap
+        val canvas = resultBitmap?.let { Canvas(it) }
+        val paint = Paint()
+        paint.color = Color.RED
+        paint.style = Paint.Style.STROKE
+        paint.strokeWidth = 5.0f
+        paint.typeface = Typeface.create(Typeface.DEFAULT, Typeface.BOLD)
+        for (deteccion in boundingBoxes){
+            if (canvas != null) {
+                canvas.drawRect(deteccion, paint)
+            }
+        }
+        imagen.setImageBitmap(resultBitmap)
+    }
+
