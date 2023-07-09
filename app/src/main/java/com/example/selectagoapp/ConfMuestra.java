@@ -3,9 +3,7 @@ package com.example.selectagoapp;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.content.ContentValues;
 import android.content.Intent;
-import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
@@ -14,14 +12,9 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.Locale;
-
 public class ConfMuestra extends AppCompatActivity {
     final String[] frutos = new String[]{"Limon"};
     final String[] precision = new String[]{"0.5","0.75","0.95"};
-    private Spinner opcionFrutas, opcionPrecision;
     private EditText cantidadArboles;
     private String nivelPrecision, tipoFruta;
 
@@ -39,8 +32,8 @@ public class ConfMuestra extends AppCompatActivity {
         }
 
         // Instanciando elementos de vista
-        opcionFrutas = findViewById(R.id.opcionFrutas);
-        opcionPrecision = findViewById(R.id.opcionPrecision);
+        Spinner opcionFrutas = findViewById(R.id.opcionFrutas);
+        Spinner opcionPrecision = findViewById(R.id.opcionPrecision);
         cantidadArboles = findViewById(R.id.intCantArbol);
         // Configuración de ArrayAdapters
         confArrayAdapter(opcionFrutas, opcionPrecision);
@@ -78,7 +71,6 @@ public class ConfMuestra extends AppCompatActivity {
                 nivelPrecision = precision[i];
                 //Toast.makeText(getApplicationContext(),"Precisión:"+ nivelPrecision, Toast.LENGTH_LONG).show();
             }
-
             @Override
             public void onNothingSelected(AdapterView<?> adapterView) {
 
@@ -87,22 +79,26 @@ public class ConfMuestra extends AppCompatActivity {
     }
 
     public void aceptarConfMu(View view) {
-        int numArboles = Integer.parseInt(String.valueOf(cantidadArboles.getText()));
-        double nivelConfianza = 1.94, estimacion = 0.5, margenError = 0.5;
-        //Toast.makeText(this, numArboles + " " + nivelPrecision + " " + tipoFruta,Toast.LENGTH_LONG).show();
-        double tMuestra = (numArboles * Math.pow(nivelConfianza, 2) *
-                estimacion * (1-estimacion))/((numArboles-1) *
-                Math.pow(margenError,2) + Math.pow(nivelConfianza,2) * estimacion * (1-estimacion));
+        try{
+            int numArboles = Integer.parseInt(String.valueOf(cantidadArboles.getText()));
+            double nivelConfianza = 1.94, estimacion = 0.5, margenError = 0.5;
+            //Toast.makeText(this, numArboles + " " + nivelPrecision + " " + tipoFruta,Toast.LENGTH_LONG).show();
+            double tMuestra = (numArboles * Math.pow(nivelConfianza, 2) *
+                    estimacion * (1-estimacion))/((numArboles-1) *
+                    Math.pow(margenError,2) + Math.pow(nivelConfianza,2) * estimacion * (1-estimacion));
 
-        System.out.println("MUESTRA: "+ tMuestra);
-        /*Intent intent = new Intent(this, Deteccion.class);
-        intent.putExtra("fruto",tipoFruta);
-        intent.putExtra("arboles", numArboles);
-        intent.putExtra("muestra", (int)tMuestra);
-        startActivity(intent);*/
+            System.out.println("MUESTRA: "+ tMuestra);
+            /*Intent intent = new Intent(this, Deteccion.class);
+            intent.putExtra("fruto",tipoFruta);
+            intent.putExtra("arboles", numArboles);
+            intent.putExtra("muestra", (int)tMuestra);
+            startActivity(intent);*/
 
-        Intent intent = new Intent(this, Deteccion.class);
-        startActivity(intent);
+            Intent intent = new Intent(this, Deteccion.class);
+            startActivity(intent);
+        }catch(NumberFormatException e){
+            Toast.makeText(this, "Existen campos sin completar",
+                    Toast.LENGTH_LONG).show();
+        }
     }
-
 }

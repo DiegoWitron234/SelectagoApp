@@ -37,14 +37,10 @@ public class ConsultaDatos extends AppCompatActivity {
 
     final String[] frutos = new String[]{"Limon"};
     private String tipoFruta, fDesde, fHasta;
-    private Spinner opcionFrutas;
     private TextView fechaDesde, fechaHasta;
     private TableLayout tablaDatos;
     private LineChart lineChart;
-    private LineData lineData;
     private ArrayList<com.github.mikephil.charting.data.Entry> entradaLinea;
-    private LineDataSet dataset;
-
     private final SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
 
     @Override
@@ -52,7 +48,7 @@ public class ConsultaDatos extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_consulta_datos);
         // Instanciendo elementos de la vista
-        opcionFrutas = findViewById(R.id.spnTipoFrutoCd);
+        Spinner opcionFrutas = findViewById(R.id.spnTipoFrutoCd);
         fechaDesde = findViewById(R.id.inDesde);
         fechaHasta = findViewById(R.id.inHasta);
         lineChart = findViewById(R.id.chProduccion);
@@ -60,7 +56,6 @@ public class ConsultaDatos extends AppCompatActivity {
         // Configuración de ArrayAdapters
         confArrayAdapter(opcionFrutas);
     }
-
 
     private void confArrayAdapter(Spinner aAFrutos){
         // Instanciando ArrayAdapters
@@ -112,14 +107,11 @@ public class ConsultaDatos extends AppCompatActivity {
     }
 
     public void fechaSeleccion(View view){
-        Locale locale = new Locale("es", "LA");
-
         // Obtener la fecha actual
         Calendar calendar = Calendar.getInstance();
         int year = calendar.get(Calendar.YEAR);
         int mes = calendar.get(Calendar.MONTH);
         int dia = calendar.get(Calendar.DAY_OF_MONTH);
-
         // DESDE
         if (view == fechaDesde){
             DatePickerDialog datePickerDialog = new DatePickerDialog(this, (datePicker, i, i1, i2) -> {
@@ -146,32 +138,26 @@ public class ConsultaDatos extends AppCompatActivity {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 tipoFruta = frutos[i];
-                //Toast.makeText(getApplicationContext(),"Fruto: "+ tipoFruta, Toast.LENGTH_LONG).show();
             }
             @Override
             public void onNothingSelected(AdapterView<?> adapterView) {
-
             }
         });
     }
 
-
     private void obtenerDatos(ArrayList<String> fechas, ArrayList<String> produccion) {
         entradaLinea = new ArrayList<>();
-        //SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
-
         for (int i = 0; i < fechas.size(); i++){
             try{
                 Date fecha = sdf.parse(fechas.get(i));
                 double valor = Double.parseDouble(produccion.get(i));
+                assert fecha != null;
                 entradaLinea.add(new Entry(fecha.getTime(), (float) valor));
-            }catch (Exception ignored){
-                ignored.printStackTrace();
+            }catch (Exception e){
+                e.printStackTrace();
             }
-
         }
     }
-
 
     private void confGrafica(LineChart lineChart, ArrayList<String> fechas,
                              ArrayList<String> produccion){
@@ -181,12 +167,11 @@ public class ConsultaDatos extends AppCompatActivity {
         yDer = lineChart.getAxisRight();
 
         obtenerDatos(fechas, produccion);
-        dataset = new LineDataSet(entradaLinea, "");
-        lineData = new LineData(dataset);
+        LineDataSet dataset = new LineDataSet(entradaLinea, "");
+        LineData lineData = new LineData(dataset);
         lineChart.setData(lineData);
 
         xAxis.setValueFormatter(new IAxisValueFormatter() {
-            //private final SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
             @Override
             public String getFormattedValue(float value, AxisBase axis) {
                 return sdf.format(new Date((long) value));
@@ -206,47 +191,44 @@ public class ConsultaDatos extends AppCompatActivity {
     }
 
     public void hallarDatos(View view){
-        //Toast.makeText(this, "FRUTO: "+tipoFruta+" INICIO: "+fDesde+" FINAL: "+fHasta,
-        //      Toast.LENGTH_SHORT).show();
         ArrayList<String> produccion = new ArrayList<>();
         ArrayList<String> fechas = new ArrayList<>();
         String [] selectionArgs = {tipoFruta, fDesde, fHasta};
-
-        // OBJETOS DE BASE DATOS
-        SQLiteHelperKotlin mydb = new SQLiteHelperKotlin(this);
-        SQLiteDatabase db = mydb.getReadableDatabase();
-        // ESTRUCTURA DE CONSULTA
-        // SELECT fecha, cantidad_parcela FROM DETECCIONES WHERE fruto = 'Limon' AND fecha BETWEEN "03/07/2023" AND "07/07/2023" ORDER BY fecha DESC
-        //String consulta = "select fecha, cantidad_parcela from detecciones WHERE fruto = ? AND fecha BETWEEN ? AND ? ORDER BY fecha DESC";
-        try{
-            String consulta = "select fecha, cantidad_parcela from detecciones WHERE fruto = ? " +
-                    "AND fecha BETWEEN ? AND ? ORDER BY fecha DESC";
-            Cursor cursor = db.rawQuery(consulta, selectionArgs);
-            if (cursor.moveToFirst()){
-                do{
-                    String fecha = cursor.getString(0);
-                    String prod = cursor.getString(1);
-                    fechas.add(fecha);
-                    produccion.add(prod);
-                    //Toast.makeText(this,fecha+prod,Toast.LENGTH_SHORT).show();
-                }while(cursor.moveToNext());
-                //Toast.makeText(this, "Realizando consulta", Toast.LENGTH_LONG).show();
-            }else{
-                Toast.makeText(this, "No se realizo la consulta", Toast.LENGTH_LONG).show();
+        if (tipoFruta != null && fDesde != null && fHasta != null){
+            // OBJETOS DE BASE DATOS
+            SQLiteHelperKotlin mydb = new SQLiteHelperKotlin(this);
+            SQLiteDatabase db = mydb.getReadableDatabase();
+            try{
+                // ESTRUCTURA DE CONSULTA
+                // SELECT fecha, cantidad_parcela FROM DETECCIONES WHERE fruto = 'Limon' AND fecha BETWEEN "03/07/2023" AND "07/07/2023" ORDER BY fecha DESC
+                String consulta = "select fecha, cantidad_parcela from detecciones WHERE fruto = ? " +
+                        "AND fecha BETWEEN ? AND ? ORDER BY fecha DESC";
+                Cursor cursor = db.rawQuery(consulta, selectionArgs);
+                if (cursor.moveToFirst()){
+                    do{
+                        String fecha = cursor.getString(0);
+                        String prod = cursor.getString(1);
+                        fechas.add(fecha);
+                        produccion.add(prod);
+                    }while(cursor.moveToNext());
+                    // CARGAR DATOS A LA TABLA
+                    cargaTablas(tablaDatos, fechas, produccion);
+                    // CARGAR DATOS A LA GRAFICA
+                    confGrafica(lineChart, fechas, produccion);
+                }else{
+                    Toast.makeText(this, "No se hallaron estimaciones", Toast.LENGTH_LONG).show();
+                }
+                cursor.close();
+            }catch (Exception e){
+                e.printStackTrace();
+            }finally {
+                if (db != null && db.isOpen()){
+                    db.close();
+                }
             }
-            cursor.close();
-        }catch (Exception e){
-            e.printStackTrace();
-        }finally {
-            if (db != null && db.isOpen()){
-                db.close();
-            }
+        }else{
+            Toast.makeText(this, "Existen campos sin completar",
+                    Toast.LENGTH_LONG).show();
         }
-        // Carga de datos en tabla
-        cargaTablas(tablaDatos, fechas, produccion);
-        // Carga de datos en grafica
-        confGrafica(lineChart, fechas, produccion);
     }
-
-
 }

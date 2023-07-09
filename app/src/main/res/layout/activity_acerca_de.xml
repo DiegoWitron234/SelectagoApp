@@ -12,10 +12,10 @@
         android:layout_height="wrap_content"
         android:text="Acerca De"
         android:layout_gravity="center"
-        android:textSize="23dp"
+        android:textSize="23sp"
         android:textStyle="bold"
         android:textColor="@color/black"
-        android:layout_margin="15dp"
+        android:layout_margin="15sp"
         />
 
     <LinearLayout
@@ -39,13 +39,13 @@
                 android:text="SelectagoApp"
                 android:textColor="@color/black"
                 android:layout_marginTop="15dp"
-                android:textSize="20dp"
+                android:textSize="20sp"
                 />
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Versión 1.0.0"
-                android:textSize="20dp"
+                android:textSize="20sp"
                 android:textColor="@color/black"
                 android:layout_marginTop="15dp"
                 />
@@ -57,7 +57,7 @@
         android:layout_height="wrap_content"
         android:text="Contacto"
         android:textColor="@color/black"
-        android:textSize="20dp"
+        android:textSize="20sp"
         android:layout_margin="20dp"
         />
 
@@ -76,7 +76,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="marca.selectago23@gmail.com"
-            android:textSize="18dp"
+            android:textSize="18sp"
             android:layout_gravity="center"
             android:layout_marginLeft="30dp"
             />
@@ -121,7 +121,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Selectago.01"
-            android:textSize="18dp"
+            android:textSize="18sp"
             android:layout_gravity="center"
             android:layout_marginLeft="30dp"
             />
@@ -144,7 +144,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="9614691395"
-            android:textSize="18dp"
+            android:textSize="18sp"
             android:layout_gravity="center"
             android:layout_marginLeft="30dp"
             />
@@ -155,7 +155,7 @@
         android:layout_height="match_parent"
         android:layout_marginLeft="20dp"
         android:layout_marginTop="40dp"
-        android:textSize="15dp"
+        android:textSize="15sp"
         android:layout_gravity="center"
         android:gravity="bottom"
         android:text="SelectagoApp\n©2023 Selectago. Todos los derechos reservados"

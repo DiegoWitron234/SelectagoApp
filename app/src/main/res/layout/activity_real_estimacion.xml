@@ -19,6 +19,16 @@
         android:layout_marginHorizontal="20dp"
         />
 
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Tipo de fruto"
+        android:textSize="25sp"
+        android:textColor="@color/black"
+        android:layout_marginTop="20dp"
+        android:layout_marginHorizontal="20dp"
+        />
+
     <Spinner
         android:id="@+id/spnTipoFruto"
         android:layout_width="match_parent"
@@ -27,39 +37,41 @@
         android:layout_marginHorizontal="20dp"
         />
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Precio de venta por kilo"
-        android:textSize="20sp"
-        android:textColor="@color/black"
-        android:layout_marginTop="20dp"
-        android:layout_marginHorizontal="20dp"
-        />
-
-    <EditText
-        android:id="@+id/txtPrecioVenta"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textSize="20sp"
-        android:inputType="numberDecimal"
-        android:layout_marginTop="20dp"
-        android:layout_marginHorizontal="20dp"
-        />
-
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
         >
+        <TextView
+            android:id="@+id/tvPrecio"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="20dp"
+            android:layout_marginTop="35dp"
+            android:text="Precio de venta por kilo"
+            android:textColor="@color/black"
+            android:textSize="20sp" />
+
+        <EditText
+            android:id="@+id/txtPrecioVenta"
+            android:layout_width="150sp"
+            android:layout_height="60sp"
+            android:textSize="25sp"
+            android:inputType="numberDecimal"
+            android:layout_marginTop="20dp"
+            android:layout_toEndOf="@id/tvPrecio"
+            />
 
         <TextView
-            android:layout_width="150dp"
+            android:id="@+id/tvCosecha"
+            android:layout_width="210dp"
             android:layout_height="60dp"
             android:text="Días límite para cosechar"
             android:textSize="20sp"
             android:textColor="@color/black"
+            android:layout_marginTop="35dp"
             android:layout_marginHorizontal="20dp"
+            android:layout_below="@id/tvPrecio"
             />
 
         <EditText
@@ -68,9 +80,12 @@
             android:layout_height="60sp"
             android:layout_marginTop="16dp"
             android:inputType="number"
+            android:textSize="25sp"
+            android:layout_below="@+id/txtPrecioVenta"
+            android:layout_toEndOf="@id/tvCosecha"
             />
 
-    </LinearLayout>
+    </RelativeLayout>
 
     <Button
         android:id="@+id/btnAceptarConfMu"

@@ -3,7 +3,6 @@ package com.example.selectagoapp;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.content.ContentValues;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -18,8 +17,7 @@ import android.widget.Toast;
 public class RealEstimacion extends AppCompatActivity {
 
     final String[] frutos = new String[]{"Limon"};
-    private String transporte [][] = new String[4][2];
-    private Spinner opcionFrutas;
+    private final String[][] transporte = new String[4][2];
     private EditText txtPrecioVenta, txtDia;
     private String tipoFruta;
 
@@ -37,7 +35,7 @@ public class RealEstimacion extends AppCompatActivity {
         }
 
         // Instanciando elementos de la vista
-        opcionFrutas = findViewById(R.id.spnTipoFruto);
+        Spinner opcionFrutas = findViewById(R.id.spnTipoFruto);
         txtPrecioVenta = findViewById(R.id.txtPrecioVenta);
         txtDia = findViewById(R.id.txtDias);
         //Configuración de ArrayAdapter
@@ -70,72 +68,74 @@ public class RealEstimacion extends AppCompatActivity {
     }
 
     public void aceptarConfEst(View view) {
-        String [] valores = registro();
-        System.out.println("CONSULTA: "+valores[0]);
-        double precioVenta = Double.parseDouble(String.valueOf(txtPrecioVenta.getText())); // Por KIlo
-        int dias = Integer.parseInt(String.valueOf(txtDia.getText()));
-        double capacidad_costal = 20;
-        double gramoFruto = 80;
-        int costalesDiarios = 50;
-        String traslado;
+        try {
+            double precioVenta = Double.parseDouble(String.valueOf(txtPrecioVenta.getText())),
+                    capacidad_costal = 20, gramoFruto = 80;
+            int costalesDiarios = 50, dias = Integer.parseInt(String.valueOf(txtDia.getText()));
+            String traslado;
 
-        double pesoTotal = (Double.parseDouble(valores[0]) * gramoFruto) / 1000; // < EN KILOS
-        double costales = pesoTotal / capacidad_costal;
-        double valorProduccion = pesoTotal * precioVenta;
-        double diasHombre = Math.round(costales / costalesDiarios);
-        double trabajadores = diasHombre / dias;
-        double tonelada = pesoTotal/1000;
-        String[]camiones= medio_traslado(pesoTotal/1000);
+            String valores = registro();
+            if (!valores.isEmpty()){
+                double pesoTotal = (Double.parseDouble(valores) * gramoFruto) / 1000; // < EN KILOS
+                double costales = pesoTotal / capacidad_costal;
+                double valorProduccion = pesoTotal * precioVenta;
+                double diasHombre = Math.round(costales / costalesDiarios);
+                double trabajadores = diasHombre / dias;
+                double tonelada = pesoTotal/1000;
+                String[]camiones= medio_traslado(pesoTotal/1000);
 
-        if (camiones[0].equals("Trailer")){
-            if(!camiones[1].equals("1.0")){
-                traslado =(int) Double.parseDouble(camiones[1])+" Trailers de 25 t";
+                if (camiones[0].equals("Trailer")){
+                    if(!camiones[1].equals("1.0")){
+                        traslado =(int) Double.parseDouble(camiones[1])+" Trailers de 25 t";
+                    }else{
+                        traslado = "1 Trailer de 25 t";
+                    }
+                }else{
+                    traslado = "1 "+ camiones[0];
+                }
+
+                Intent intent = new Intent (this, ResultadosEstimacion.class);
+                intent.putExtra("fruto", tipoFruta);
+                intent.putExtra("produccion", valores);
+                intent.putExtra("valor", valorProduccion);
+                intent.putExtra("recolectores", (int) Math.ceil(trabajadores));
+                intent.putExtra("costales", (int) Math.ceil(costales));
+                intent.putExtra("transporte", traslado);
+                intent.putExtra("tonelada", tonelada);
+                startActivity(intent);
             }else{
-                traslado = "1 Trailer de 25 t";
+                Toast.makeText(this, "Sin estimaciones realizadas",
+                        Toast.LENGTH_LONG).show();
             }
-        }else{
-            traslado = "1 "+ camiones[0];
+        }catch (NumberFormatException e) {
+            Toast.makeText(this, "Existen campos sin completar",
+                    Toast.LENGTH_LONG).show();
         }
-
-        Intent intent = new Intent (this, ResultadosEstimacion.class);
-        intent.putExtra("fruto", tipoFruta);
-        intent.putExtra("produccion", valores[0]);
-        intent.putExtra("valor", valorProduccion);
-        intent.putExtra("recolectores", (int) Math.ceil(trabajadores));
-        intent.putExtra("costales", (int) Math.ceil(costales));
-        intent.putExtra("transporte", traslado);
-        intent.putExtra("tonelada", tonelada);
-        startActivity(intent);
     }
 
-    private String[] registro(){
-        String[] datos = new String[2];
+    private String registro(){
+        String datos = "";
         SQLiteHelperKotlin mydb = new SQLiteHelperKotlin(this);
         SQLiteDatabase db = mydb.getReadableDatabase();
-        // ESTRUCTURA DE CONSULTA
-        System.out.println("FRUTO:" + tipoFruta);
+        //System.out.println("FRUTO:" + tipoFruta);
         try{
             String[] whereArgs = {tipoFruta}; // Argumentos para la cláusula WHERE si es necesario
-            String consulta = "select cantidad_parcela, fecha from detecciones WHERE fruto = ? ORDER BY fecha DESC LIMIT 1";
+            String consulta = "SELECT cantidad_parcela, fecha FROM detecciones WHERE fruto = ? ORDER BY fecha DESC LIMIT 1";
             Cursor cursor = db.rawQuery(consulta, whereArgs);
             if (cursor.moveToFirst()){
                 do{
-                    System.out.println("VALOR: "+cursor.getString(0));
-                    datos[0] = cursor.getString(0);
+                    datos = cursor.getString(0);
                 }while (cursor.moveToNext());
-            }else{
-                Toast.makeText(this, "No se realizo la consulta", Toast.LENGTH_LONG).show();
             }
             cursor.close();
-            return datos;
         }catch (Exception e){
             e.printStackTrace();
-            return null;
         }finally {
             if (db != null && db.isOpen()){
                 db.close();
             }
         }
+        return datos;
     }
 
     private void datos_transporte(){
@@ -168,7 +168,6 @@ public class RealEstimacion extends AppCompatActivity {
         }
         camiones[0] = transporte[i][0];
         camiones[1] = "" + cantidad_transporte;
-
         return camiones;
     }
 }

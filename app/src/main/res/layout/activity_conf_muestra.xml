@@ -20,11 +20,31 @@
         tools:layout_editor_absoluteX="147dp"
         tools:layout_editor_absoluteY="145dp" />
 
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Tipo de fruto"
+        android:textSize="25sp"
+        android:textColor="@color/black"
+        android:layout_marginTop="20dp"
+        android:layout_marginHorizontal="20dp"
+        />
+
     <Spinner
         android:id="@+id/opcionFrutas"
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:layout_marginTop="30dp"
+        android:layout_marginHorizontal="20dp"
+        />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Nivel de precisión"
+        android:textSize="25sp"
+        android:textColor="@color/black"
+        android:layout_marginTop="20dp"
         android:layout_marginHorizontal="20dp"
         />
 
@@ -41,7 +61,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Cantidad de árboles"
-        android:textSize="15sp"
+        android:textSize="25sp"
         android:textColor="@color/black"
         android:layout_marginTop="20dp"
         android:layout_marginHorizontal="20dp"
@@ -51,7 +71,8 @@
         android:id="@+id/intCantArbol"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textSize="20sp"
+        android:textSize="30sp"
+        android:textAlignment="center"
         android:inputType="number"
         android:layout_marginTop="20dp"
         android:layout_marginHorizontal="20dp"
