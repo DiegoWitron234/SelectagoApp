@@ -43,6 +43,7 @@ class Deteccion : AppCompatActivity() {
     lateinit var imagen: ImageView
     var bitmap: Bitmap? = null
     lateinit var objectDetectorHelper: ObjectDetectorHelper
+
     // Variables para almacenar la categoría y el puntaje del objeto detectado
     //var cantidad: Int? = null
     //var puntajes: MutableList<Float> = mutableListOf()
@@ -116,7 +117,11 @@ class Deteccion : AppCompatActivity() {
                     }
                 }
                 //Muestra un toast con la cantidad de frutos detectados
-                Toast.makeText(applicationContext, "Frutos detectados: $cantidad", Toast.LENGTH_SHORT).show()
+                Toast.makeText(
+                    applicationContext,
+                    "Frutos detectados: $cantidad",
+                    Toast.LENGTH_SHORT
+                ).show()
                 // Imprime la categoría y el puntaje almacenados
                 println("Resultados: $results")
                 println("Cantidad: $cantidad")
@@ -154,13 +159,13 @@ class Deteccion : AppCompatActivity() {
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        if(requestCode == 11 && resultCode == RESULT_OK){
+        if (requestCode == 11 && resultCode == RESULT_OK) {
             try {
                 val capturedBitmap = data?.extras?.get("data") as Bitmap
                 bitmap = ajustarBitmap(capturedBitmap, 512, 512)
                 //bitmap = data?.extras?.get("data") as Bitmap
                 imagen.setImageBitmap(bitmap)
-            }catch (e: Exception){
+            } catch (e: Exception) {
                 e.printStackTrace()
                 println("Ocurrió un error al conseguir la imagen de la cámara")
             }
@@ -195,44 +200,48 @@ class Deteccion : AppCompatActivity() {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
     }
 
-   // ----------------------------------------------------------------------------------------------
+    // ----------------------------------------------------------------------------------------------
     fun detectar(view: View) {
         //Función del botón que analiza la imagen
-        if(bitmap != null){
+        if (bitmap != null) {
             objectDetectorHelper.detect(bitmap!!, 0)
-        }else{
+        } else {
             println("El bitmap es nulo")
         }
     }
 
     fun fnCambiarImagen(view: View) {
-        if (imagenSeleccionada == 0){
+        if (imagenSeleccionada == 0) {
             imagenSeleccionada = 1
             val resourceId = resources.getIdentifier("limon", "drawable", packageName)
             imagen.setImageResource(resourceId)
             bitmap = BitmapFactory.decodeResource(resources, R.drawable.limon)
-        } else if (imagenSeleccionada == 1){
+        } else if (imagenSeleccionada == 1) {
             imagenSeleccionada = 2
             val resourceId = resources.getIdentifier("limon2", "drawable", packageName)
             imagen.setImageResource(resourceId)
             bitmap = BitmapFactory.decodeResource(resources, R.drawable.limon2)
-        } else if (imagenSeleccionada == 2){
+        } else if (imagenSeleccionada == 2) {
             imagenSeleccionada = 3
             val resourceId = resources.getIdentifier("limon3", "drawable", packageName)
             imagen.setImageResource(resourceId)
             bitmap = BitmapFactory.decodeResource(resources, R.drawable.limon3)
-        } else if (imagenSeleccionada == 3){
+        } else if (imagenSeleccionada == 3) {
             imagenSeleccionada = 4
             val resourceId = resources.getIdentifier("limonespersas", "drawable", packageName)
             imagen.setImageResource(resourceId)
             bitmap = BitmapFactory.decodeResource(resources, R.drawable.limonespersas)
-        } else if (imagenSeleccionada == 4){
+        } else if (imagenSeleccionada == 4) {
             imagenSeleccionada = 1
             val resourceId = resources.getIdentifier("limon", "drawable", packageName)
             imagen.setImageResource(resourceId)
             bitmap = BitmapFactory.decodeResource(resources, R.drawable.limon)
-        } else{
-            Toast.makeText(applicationContext, "Ha ocurrido un error con la imagen", Toast.LENGTH_SHORT).show()
+        } else {
+            Toast.makeText(
+                applicationContext,
+                "Ha ocurrido un error con la imagen",
+                Toast.LENGTH_SHORT
+            ).show()
         }
     }
 
@@ -247,7 +256,7 @@ class Deteccion : AppCompatActivity() {
         return Bitmap.createScaledBitmap(bitmap, scaledWidth, scaledHeight, true)
     }
 
-    fun dibujarCuadros(boundingBoxes : MutableList<RectF>){
+    fun dibujarCuadros(boundingBoxes: MutableList<RectF>) {
         // Crear un nuevo bitmap mutable para dibujar las cajas delimitadoras y etiquetas
         val resultBitmap: Bitmap? = bitmap?.copy(Bitmap.Config.ARGB_8888, true)
         // Obtener el objeto Canvas para dibujar en el bitmap
@@ -257,11 +266,12 @@ class Deteccion : AppCompatActivity() {
         paint.style = Paint.Style.STROKE
         paint.strokeWidth = 5.0f
         paint.typeface = Typeface.create(Typeface.DEFAULT, Typeface.BOLD)
-        for (deteccion in boundingBoxes){
+        for (deteccion in boundingBoxes) {
             if (canvas != null) {
                 canvas.drawRect(deteccion, paint)
             }
         }
         imagen.setImageBitmap(resultBitmap)
     }
+}
 
