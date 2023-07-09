@@ -104,7 +104,7 @@ public class RealEstimacion extends AppCompatActivity {
                 intent.putExtra("tonelada", tonelada);
                 startActivity(intent);
             }else{
-                Toast.makeText(this, "Sin estimaciones realizadas",
+                Toast.makeText(this, "Sin detecciones realizadas",
                         Toast.LENGTH_LONG).show();
             }
         }catch (NumberFormatException e) {
