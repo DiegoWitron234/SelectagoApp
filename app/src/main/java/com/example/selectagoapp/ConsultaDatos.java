@@ -216,7 +216,7 @@ public class ConsultaDatos extends AppCompatActivity {
                     // CARGAR DATOS A LA GRAFICA
                     confGrafica(lineChart, fechas, produccion);
                 }else{
-                    Toast.makeText(this, "No se hallaron estimaciones", Toast.LENGTH_LONG).show();
+                    Toast.makeText(this, "No se hallaron estimaciones", Toast.LENGTH_SHORT).show();
                 }
                 cursor.close();
             }catch (Exception e){
@@ -228,7 +228,7 @@ public class ConsultaDatos extends AppCompatActivity {
             }
         }else{
             Toast.makeText(this, "Existen campos sin completar",
-                    Toast.LENGTH_LONG).show();
+                    Toast.LENGTH_SHORT).show();
         }
     }
 }

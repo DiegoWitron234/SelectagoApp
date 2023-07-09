@@ -98,7 +98,7 @@ public class ConfMuestra extends AppCompatActivity {
             startActivity(intent);
         }catch(NumberFormatException e){
             Toast.makeText(this, "Existen campos sin completar",
-                    Toast.LENGTH_LONG).show();
+                    Toast.LENGTH_SHORT).show();
         }
     }
 }

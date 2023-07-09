@@ -72,13 +72,13 @@ public class ResultadosDeteccion extends AppCompatActivity {
                 valores.put("cantidad_arbol", arboles);
                 valores.put("cantidad_parcela", estimacion);
                 db.insert("detecciones", null, valores);
-                Toast.makeText(this, "Resultados guardados",Toast.LENGTH_LONG).show();
+                Toast.makeText(this, "Resultados guardados",Toast.LENGTH_SHORT).show();
                 salirDatos(view);
             }else{
-                Toast.makeText(this, "No se creó la base de datos", Toast.LENGTH_LONG).show();
+                Toast.makeText(this, "Error al guardar los resultados", Toast.LENGTH_SHORT).show();
             }
         }catch(Exception ignored){
-            Toast.makeText(this, "No se pudieron guardar los datos", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "No se pudieron guardar los resultados", Toast.LENGTH_SHORT).show();
         }
     }
 

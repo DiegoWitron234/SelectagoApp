@@ -105,11 +105,11 @@ public class RealEstimacion extends AppCompatActivity {
                 startActivity(intent);
             }else{
                 Toast.makeText(this, "Sin detecciones realizadas",
-                        Toast.LENGTH_LONG).show();
+                        Toast.LENGTH_SHORT).show();
             }
         }catch (NumberFormatException e) {
             Toast.makeText(this, "Existen campos sin completar",
-                    Toast.LENGTH_LONG).show();
+                    Toast.LENGTH_SHORT).show();
         }
     }
 
