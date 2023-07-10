@@ -3,13 +3,7 @@ package com.example.selectagoapp
 import android.Manifest
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.graphics.Bitmap
-import android.graphics.BitmapFactory
-import android.graphics.Canvas
-import android.graphics.Color
-import android.graphics.Paint
-import android.graphics.RectF
-import android.graphics.Typeface
+import android.graphics.*
 import android.os.Build
 import android.os.Bundle
 import android.provider.MediaStore
@@ -27,12 +21,20 @@ import org.tensorflow.lite.task.vision.detector.Detection
 
 class Deteccion : AppCompatActivity() {
 
-    lateinit var detectar_btn: Button
+    lateinit var siguiente_btn: Button
     lateinit var seleccionar_btn: Button
-    lateinit var resultados_txt: TextView
     lateinit var imagen: ImageView
+    lateinit var labelArboles: TextView
     var bitmap: Bitmap? = null
     lateinit var objectDetectorHelper: ObjectDetectorHelper
+    var contadorArbol: Int = 1
+    lateinit var fruto: String
+    var arboles: Int? = null
+    var muestra: Int? = null
+    var detecciones: Int = 0
+    var promedio: Int? = null
+    var estimacion: Int? = null
+    var cantidad: Int? = null
 
     // Variables para almacenar la categoría y el puntaje del objeto detectado
     //var cantidad: Int? = null
@@ -53,13 +55,20 @@ class Deteccion : AppCompatActivity() {
         permisoCamera()
 
         // Incializamos vistas
-        detectar_btn = findViewById(R.id.detect_btn)
+        siguiente_btn = findViewById(R.id.btnSiguiente)
         seleccionar_btn = findViewById(R.id.select_btn);
-        resultados_txt = findViewById(R.id.resultados_txt);
         imagen = findViewById(R.id.imagen);
+        labelArboles = findViewById(R.id.labelArboles)
+
+        fruto = intent.getStringExtra("fruto")!!
+        arboles = intent.getIntExtra("arboles", 0)
+        muestra = intent.getIntExtra("muestra", 0)
+
+        labelArboles.setText("Árbol $contadorArbol/$muestra")
 
         val resourceId = resources.getIdentifier("limonespersas", "drawable", packageName)
         //imagen.setImageResource(resourceId)
+        //bitmap = BitmapFactory.decodeResource(resources, R.drawable.limonespersas)
         val bitmapOriginal = BitmapFactory.decodeResource(resources, R.drawable.limonespersas)
         bitmap = ajustarBitmap(bitmapOriginal, 512, 512)
         imagen.setImageBitmap(bitmap)
@@ -79,12 +88,13 @@ class Deteccion : AppCompatActivity() {
                 var categoria: String? = null
                 var boundBox: MutableList<RectF>? = ArrayList();
                 var puntaje: Float? = null
-                var cantidad: Int? = null
+                //var cantidad: Int? = null
                 // Manejar los resultados de detección
                 // Itera sobre los objetos Detection en la lista results
                 if (results != null) {
                     //Obtenemos el tamaño de la lista para saber la cantidad de frutos detectados
                     cantidad = results.size
+
                     for (result in results) {
                         // Obtiene la lista de categorías del objeto Detection
                         val categorias = result.categories
@@ -142,7 +152,7 @@ class Deteccion : AppCompatActivity() {
     }
 
     // ---------------------------------- METODOS DE CAMARA ----------------------------------------
-    fun seleccionar(view: View?) {
+    fun fnTomarFoto(view: View?) {
         imagenSeleccionada = 0
         val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
         startActivityForResult(intent, 11)
@@ -155,6 +165,14 @@ class Deteccion : AppCompatActivity() {
                 bitmap = ajustarBitmap(capturedBitmap, 512, 512)
                 //bitmap = data?.extras?.get("data") as Bitmap
                 imagen.setImageBitmap(bitmap)
+
+                //Función del botón que analiza la imagen
+                if (bitmap != null) {
+                    objectDetectorHelper.detect(bitmap!!, 0)
+                } else {
+                    println("El bitmap es nulo")
+                    Toast.makeText(applicationContext, "No se ha tomado una fotografía", Toast.LENGTH_SHORT).show()
+                }
             } catch (e: Exception) {
                 e.printStackTrace()
                 println("Ocurrió un error al conseguir la imagen de la cámara")
@@ -190,15 +208,6 @@ class Deteccion : AppCompatActivity() {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
     }
 
-    // ----------------------------------------------------------------------------------------------
-    fun detectar(view: View) {
-        //Función del botón que analiza la imagen
-        if (bitmap != null) {
-            objectDetectorHelper.detect(bitmap!!, 0)
-        } else {
-            println("El bitmap es nulo")
-        }
-    }
 
     fun fnCambiarImagen(view: View) {
         if (imagenSeleccionada == 0) {
@@ -262,6 +271,47 @@ class Deteccion : AppCompatActivity() {
             }
         }
         imagen.setImageBitmap(resultBitmap)
+    }
+
+    fun fnSiguiente(view: View) {
+
+        if (cantidad!=null){
+            //Botón para avanzar el contador
+            detecciones += cantidad!!
+            cantidad = null
+            if (contadorArbol < muestra!!){
+                contadorArbol++
+                labelArboles.setText("Árbol $contadorArbol/$muestra")
+            }else{
+                calcularDatos()
+            }
+        }else{
+            Toast.makeText(applicationContext, "No se ha tomado ninguna imagen", Toast.LENGTH_SHORT).show()
+        }
+
+    }
+
+    fun calcularDatos(){
+        val promedio: Int = (detecciones/ muestra!!).toInt()
+        val estimacion: Int = (promedio*arboles!!)
+
+        val intent: Intent = Intent(this, ResultadosDeteccion::class.java)
+        intent.putExtra("fruto", fruto)
+        intent.putExtra("arboles", arboles)
+        intent.putExtra("muestra", muestra)
+        intent.putExtra("detecciones", detecciones)
+        intent.putExtra("promedio", promedio)
+        intent.putExtra("estimacion", estimacion)
+        startActivity(intent)
+    }
+
+    fun fnDetectar(view: View) {
+        //Función del botón que analiza la imagen
+        if (bitmap != null) {
+            objectDetectorHelper.detect(bitmap!!, 0)
+        } else {
+            println("El bitmap es nulo")
+        }
     }
 }
 

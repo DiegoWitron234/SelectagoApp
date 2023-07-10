@@ -83,19 +83,19 @@ public class ConfMuestra extends AppCompatActivity {
             int numArboles = Integer.parseInt(String.valueOf(cantidadArboles.getText()));
             double nivelConfianza = 1.94, estimacion = 0.5, margenError = 0.5;
             //Toast.makeText(this, numArboles + " " + nivelPrecision + " " + tipoFruta,Toast.LENGTH_LONG).show();
-            double tMuestra = (numArboles * Math.pow(nivelConfianza, 2) *
+            double muestra = (numArboles * Math.pow(nivelConfianza, 2) *
                     estimacion * (1-estimacion))/((numArboles-1) *
                     Math.pow(margenError,2) + Math.pow(nivelConfianza,2) * estimacion * (1-estimacion));
-
-            System.out.println("MUESTRA: "+ tMuestra);
-            /*Intent intent = new Intent(this, Deteccion.class);
-            intent.putExtra("fruto",tipoFruta);
-            intent.putExtra("arboles", numArboles);
-            intent.putExtra("muestra", (int)tMuestra);
-            startActivity(intent);*/
+            System.out.println("MUESTRA: "+ muestra);
 
             Intent intent = new Intent(this, Deteccion.class);
+            intent.putExtra("fruto",tipoFruta);
+            intent.putExtra("arboles", numArboles);
+            intent.putExtra("muestra", (int)muestra);
             startActivity(intent);
+
+            //Intent intent = new Intent(this, Deteccion.class);
+            //startActivity(intent);
         }catch(NumberFormatException e){
             Toast.makeText(this, "Existen campos sin completar",
                     Toast.LENGTH_SHORT).show();

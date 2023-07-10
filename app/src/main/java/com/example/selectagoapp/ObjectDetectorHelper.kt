@@ -15,7 +15,7 @@ import org.tensorflow.lite.task.vision.detector.ObjectDetector
 
 class ObjectDetectorHelper(
     var threshold: Float = 0.5f,
-    var numThreads: Int = 4,
+    var numThreads: Int = 2,
     var maxResults: Int = 30,
     var currentDelegate: Int = 0,
     var currentModel: Int = 0,

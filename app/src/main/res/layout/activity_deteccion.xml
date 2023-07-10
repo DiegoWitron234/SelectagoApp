@@ -33,27 +33,30 @@
         android:layout_marginTop="20dp"
         android:layout_gravity="center"
         android:text="Tomar foto"
-        android:onClick="seleccionar"
+        android:onClick="fnTomarFoto"
         />
+
     <Button
-        android:id="@+id/detect_btn"
+        android:id="@+id/btnDetectar"
         android:layout_width="125dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
         android:layout_gravity="center"
         android:text="Detectar"
-        android:onClick="detectar"
+        android:onClick="fnDetectar"
         />
 
-    <TextView
-        android:id="@+id/resultados_txt"
-        android:layout_width="268dp"
-        android:layout_height="46dp"
-        android:layout_gravity="center"
+    <Button
+        android:id="@+id/btnSiguiente"
+        android:layout_width="125dp"
+        android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
-        android:textAlignment="center"
-        android:textSize="20sp"
-        android:textStyle="bold" />
+        android:layout_gravity="center"
+        android:text="Siguiente"
+        android:onClick="fnSiguiente"
+        />
+
+
 
 
 </LinearLayout>
