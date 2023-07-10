@@ -14,7 +14,7 @@ import android.widget.Toast;
 
 public class ConfMuestra extends AppCompatActivity {
     final String[] frutos = new String[]{"Limon"};
-    final String[] precision = new String[]{"0.5","0.75","0.95"};
+    final String[] precision = new String[]{"0.5","0.75","0.90"};
     private EditText cantidadArboles;
     private String nivelPrecision, tipoFruta;
 
@@ -92,6 +92,7 @@ public class ConfMuestra extends AppCompatActivity {
             intent.putExtra("fruto",tipoFruta);
             intent.putExtra("arboles", numArboles);
             intent.putExtra("muestra", (int)muestra);
+            intent.putExtra("precision", Float.valueOf(nivelPrecision));
             startActivity(intent);
 
             //Intent intent = new Intent(this, Deteccion.class);

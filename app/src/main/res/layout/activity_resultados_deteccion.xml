@@ -62,7 +62,7 @@
         android:layout_marginLeft="30dp"
         android:layout_marginTop="30dp"
         android:textColor="@color/black"
-        android:text="Frutos por árbol: "
+        android:text="Promedio por árbol: "
         android:textSize="25dp"
         />
 

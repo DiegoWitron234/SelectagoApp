@@ -25,7 +25,7 @@ public class Ayuda extends AppCompatActivity {
     }
 
     public void fnVerVideosTutoriales(View view) {
-        String url = "https://www.example.com"; // Reemplaza con tu enlace
+        String url = "https://www.youtube.com/channel/UCsnJEWQcQcMQF30tevhNKCQ"; // Reemplaza con tu enlace
         Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
         startActivity(intent);
     }

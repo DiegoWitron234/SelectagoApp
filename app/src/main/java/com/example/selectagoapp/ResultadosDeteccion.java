@@ -8,7 +8,6 @@ import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -88,7 +87,7 @@ public class ResultadosDeteccion extends AppCompatActivity {
         Date currentDate = new Date();
 
         // Definir el patrón de formato deseado
-        String pattern = "dd/MM/yyyy";
+        String pattern = "dd/MM/yyyy HH:mm:ss";
 
         // Crear un objeto SimpleDateFormat con el patrón
         SimpleDateFormat dateFormat = new SimpleDateFormat(pattern, Locale.getDefault());

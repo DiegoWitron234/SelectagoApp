@@ -36,6 +36,7 @@ class Deteccion : AppCompatActivity() {
     var estimacion: Int? = null
     var cantidad: Int? = null
 
+
     // Variables para almacenar la categoría y el puntaje del objeto detectado
     //var cantidad: Int? = null
     //var puntajes: MutableList<Float> = mutableListOf()
@@ -63,6 +64,7 @@ class Deteccion : AppCompatActivity() {
         fruto = intent.getStringExtra("fruto")!!
         arboles = intent.getIntExtra("arboles", 0)
         muestra = intent.getIntExtra("muestra", 0)
+        val precison = intent.getFloatExtra("precision", 0F)
 
         labelArboles.setText("Árbol $contadorArbol/$muestra")
 
@@ -78,7 +80,6 @@ class Deteccion : AppCompatActivity() {
                 // Manejar el error de detección
                 println("Ocurrió un error en la detección")
             }
-
             override fun onResults(
                 results: MutableList<Detection>?,
                 inferenceTime: Long,
@@ -86,7 +87,7 @@ class Deteccion : AppCompatActivity() {
                 imageWidth: Int
             ) {
                 var categoria: String? = null
-                var boundBox: MutableList<RectF>? = ArrayList();
+                var boundBox: MutableList<RectF>? = ArrayList()
                 var puntaje: Float? = null
                 //var cantidad: Int? = null
                 // Manejar los resultados de detección
@@ -133,9 +134,8 @@ class Deteccion : AppCompatActivity() {
             }
         }
 
-
         objectDetectorHelper = ObjectDetectorHelper(
-            threshold = 0.5f,
+            threshold = precison,
             numThreads = 4,
             maxResults = 30,
             currentDelegate = 0,
@@ -214,27 +214,32 @@ class Deteccion : AppCompatActivity() {
             imagenSeleccionada = 1
             val resourceId = resources.getIdentifier("limon", "drawable", packageName)
             imagen.setImageResource(resourceId)
-            bitmap = BitmapFactory.decodeResource(resources, R.drawable.limon)
+            val rev = BitmapFactory.decodeResource(resources, R.drawable.limon)
+            bitmap = ajustarBitmap(rev,512, 512)
         } else if (imagenSeleccionada == 1) {
             imagenSeleccionada = 2
             val resourceId = resources.getIdentifier("limon2", "drawable", packageName)
             imagen.setImageResource(resourceId)
-            bitmap = BitmapFactory.decodeResource(resources, R.drawable.limon2)
+            val rev = BitmapFactory.decodeResource(resources, R.drawable.limon2)
+            bitmap = ajustarBitmap(rev,512, 512)
         } else if (imagenSeleccionada == 2) {
             imagenSeleccionada = 3
-            val resourceId = resources.getIdentifier("limon3", "drawable", packageName)
+            val resourceId = resources.getIdentifier("limon4", "drawable", packageName)
             imagen.setImageResource(resourceId)
-            bitmap = BitmapFactory.decodeResource(resources, R.drawable.limon3)
+            val rev  = BitmapFactory.decodeResource(resources, R.drawable.limon4)
+            bitmap = ajustarBitmap(rev,512, 512)
         } else if (imagenSeleccionada == 3) {
             imagenSeleccionada = 4
             val resourceId = resources.getIdentifier("limonespersas", "drawable", packageName)
             imagen.setImageResource(resourceId)
-            bitmap = BitmapFactory.decodeResource(resources, R.drawable.limonespersas)
+            val rev = BitmapFactory.decodeResource(resources, R.drawable.limonespersas)
+            bitmap = ajustarBitmap(rev,512, 512)
         } else if (imagenSeleccionada == 4) {
             imagenSeleccionada = 1
             val resourceId = resources.getIdentifier("limon", "drawable", packageName)
             imagen.setImageResource(resourceId)
-            bitmap = BitmapFactory.decodeResource(resources, R.drawable.limon)
+            val rev  = BitmapFactory.decodeResource(resources, R.drawable.limon)
+            bitmap = ajustarBitmap(rev,512, 512)
         } else {
             Toast.makeText(
                 applicationContext,
@@ -264,7 +269,8 @@ class Deteccion : AppCompatActivity() {
         paint.color = Color.RED
         paint.style = Paint.Style.STROKE
         paint.strokeWidth = 5.0f
-        paint.typeface = Typeface.create(Typeface.DEFAULT, Typeface.BOLD)
+        paint.textSize = 20.0f
+        paint.typeface = Typeface.create(Typeface.DEFAULT, Typeface.NORMAL)
         for (deteccion in boundingBoxes) {
             if (canvas != null) {
                 canvas.drawRect(deteccion, paint)

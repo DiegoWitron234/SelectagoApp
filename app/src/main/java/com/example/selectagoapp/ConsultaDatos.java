@@ -7,6 +7,7 @@ import android.app.DatePickerDialog;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
@@ -20,13 +21,13 @@ import android.widget.Toast;
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.components.AxisBase;
 import com.github.mikephil.charting.components.XAxis;
-import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.formatter.IAxisValueFormatter;
 import com.github.mikephil.charting.utils.ColorTemplate;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -41,7 +42,6 @@ public class ConsultaDatos extends AppCompatActivity {
     private TableLayout tablaDatos;
     private LineChart lineChart;
     private ArrayList<com.github.mikephil.charting.data.Entry> entradaLinea;
-    private final SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,32 +74,66 @@ public class ConsultaDatos extends AppCompatActivity {
         TableRow headerRow = new TableRow(this);
         headerRow.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT,
                 TableRow.LayoutParams.WRAP_CONTENT));
+
         // Creando objetos TextView para insertarlos como cabecera
         TextView header1 = new TextView(this);
         header1.setText("Fecha");
+        header1.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
+        header1.setTextSize(20);
+        header1.setTypeface(null, Typeface.BOLD);
         header1.setBackgroundColor(Color.parseColor("#a2d001"));
+        header1.setPadding(20,20,20,20);
         headerRow.addView(header1);
 
         TextView header2 = new TextView(this);
-        header2.setText("Produccion");
+        header2.setText("Producción");
+        header2.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
+        header2.setTextSize(20);
+        header2.setTypeface(null, Typeface.BOLD);
         header2.setBackgroundColor(Color.parseColor("#a2d001"));
+        header2.setPadding(20,20,20,20);
         headerRow.addView(header2);
+
         // Cargando datos
         tablaDatos.addView(headerRow);
 
         // Agregar los datos a la tabla
         for (int i = 0; i < produccion.size(); i++) {
             TableRow dataRow = new TableRow(this);
+
             // Estableciendo parametros para que las filas cubran el tamaño adecuado
             dataRow.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT,
                     TableRow.LayoutParams.WRAP_CONTENT));
+
             // Creando objetos TextView para cargar los datos
             TextView data1 = new TextView(this);
-            data1.setText(fechas.get(i));
+            data1.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
+            data1.setTextSize(20);
+            data1.setTextColor(Color.BLACK);
+
+            SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss", Locale.getDefault());
+
+            Date date = null;
+            try {
+                date = dateFormat.parse(fechas.get(i));
+            } catch (ParseException e) {
+                throw new RuntimeException(e);
+            }
+
+            SimpleDateFormat dateFormatFecha = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
+            String fecha = dateFormatFecha.format(date);
+
+
+            data1.setText(fecha);
+            data1.setPadding(20,20,20,20);
             dataRow.addView(data1);
 
             TextView data2 = new TextView(this);
+            data2.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
+            data2.setTextSize(20);
+            data2.setTextColor(Color.BLACK);
             data2.setText(produccion.get(i));
+            data2.setPadding(20,20,20,20);
             dataRow.addView(data2);
 
             tablaDatos.addView(dataRow);
@@ -108,6 +142,7 @@ public class ConsultaDatos extends AppCompatActivity {
 
     public void fechaSeleccion(View view){
         // Obtener la fecha actual
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
         Calendar calendar = Calendar.getInstance();
         int year = calendar.get(Calendar.YEAR);
         int mes = calendar.get(Calendar.MONTH);
@@ -145,11 +180,12 @@ public class ConsultaDatos extends AppCompatActivity {
         });
     }
 
-    private void obtenerDatos(ArrayList<String> fechas, ArrayList<String> produccion) {
+    private void obtenerDatos(ArrayList<String> fechas, ArrayList<String> produccion,
+                              SimpleDateFormat sdf1) {
         entradaLinea = new ArrayList<>();
         for (int i = 0; i < fechas.size(); i++){
             try{
-                Date fecha = sdf.parse(fechas.get(i));
+                Date fecha = sdf1.parse(fechas.get(i));
                 double valor = Double.parseDouble(produccion.get(i));
                 assert fecha != null;
                 entradaLinea.add(new Entry(fecha.getTime(), (float) valor));
@@ -161,12 +197,9 @@ public class ConsultaDatos extends AppCompatActivity {
 
     private void confGrafica(LineChart lineChart, ArrayList<String> fechas,
                              ArrayList<String> produccion){
-        YAxis yIzq, yDer;
         XAxis xAxis = lineChart.getXAxis();
-        yIzq = lineChart.getAxisLeft();
-        yDer = lineChart.getAxisRight();
-
-        obtenerDatos(fechas, produccion);
+        SimpleDateFormat sdf1 = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
+        obtenerDatos(fechas, produccion, sdf1);
         LineDataSet dataset = new LineDataSet(entradaLinea, "");
         LineData lineData = new LineData(dataset);
         lineChart.setData(lineData);
@@ -174,19 +207,15 @@ public class ConsultaDatos extends AppCompatActivity {
         xAxis.setValueFormatter(new IAxisValueFormatter() {
             @Override
             public String getFormattedValue(float value, AxisBase axis) {
-                return sdf.format(new Date((long) value));
+                return sdf1.format(new Date((long) value));
             }
         });
-        xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
-        xAxis.setLabelCount(5);
-        yIzq.setLabelCount(5);
-        yDer.disableAxisLineDashedLine();
 
         lineChart.getDescription().setEnabled(false);
         dataset.setColor(ColorTemplate.JOYFUL_COLORS[3]);
         dataset.setValueTextColor(Color.BLACK);
         dataset.setValueTextSize(18f);
-
+        lineChart.setTouchEnabled(false);
         lineChart.invalidate();
     }
 

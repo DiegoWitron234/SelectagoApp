@@ -11,8 +11,7 @@ import android.widget.TextView;
 public class ResultadosEstimacion extends AppCompatActivity {
 
     private TextView txtFruto, txtProduccion, txtValor, txtRecolectores, txtCostales, txtTransporte;
-    private String fruto, transporte, produccion;
-    private double valor, tonelada;
+    private String fruto, transporte, produccion, peso, valor;
     private int recolectores, costales;
 
     @Override
@@ -38,11 +37,11 @@ public class ResultadosEstimacion extends AppCompatActivity {
         Intent intent = getIntent();
         fruto = intent.getStringExtra("fruto");
         produccion = intent.getStringExtra("produccion");
-        valor = intent.getDoubleExtra("valor", 0);
+        valor = intent.getStringExtra("valor");
         recolectores = intent.getIntExtra("recolectores",0 );
         costales = intent.getIntExtra("costales", 0);
         transporte = intent.getStringExtra("transporte");
-        tonelada = intent.getDoubleExtra("tonelada", 0);
+        peso = intent.getStringExtra("peso");
 
         mostrarDatos();
 
@@ -50,7 +49,7 @@ public class ResultadosEstimacion extends AppCompatActivity {
 
     private void mostrarDatos(){
         txtFruto.setText("Tipo De Fruto: "+fruto);
-        txtProduccion.setText("Estimación de producción: "+produccion +" frutos = "+tonelada+" t");
+        txtProduccion.setText(produccion +" frutos = "+peso);
         txtValor.setText("Valor de producción: $"+valor);
         txtRecolectores.setText("Recolectores necesarios: "+recolectores);
         txtCostales.setText("Número de costales: "+costales);

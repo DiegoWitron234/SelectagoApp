@@ -71,17 +71,22 @@ public class RealEstimacion extends AppCompatActivity {
         try {
             double precioVenta = Double.parseDouble(String.valueOf(txtPrecioVenta.getText())),
                     capacidad_costal = 20, gramoFruto = 80;
-            int costalesDiarios = 50, dias = Integer.parseInt(String.valueOf(txtDia.getText()));
+            int costalesDiarios = 5, dias = Integer.parseInt(String.valueOf(txtDia.getText()));
             String traslado;
 
             String valores = registro();
             if (!valores.isEmpty()){
+                String resultadoPeso;
                 double pesoTotal = (Double.parseDouble(valores) * gramoFruto) / 1000; // < EN KILOS
                 double costales = pesoTotal / capacidad_costal;
-                double valorProduccion = pesoTotal * precioVenta;
+                String valorProduccion = String.format("%.2f", (pesoTotal * precioVenta));
                 double diasHombre = Math.round(costales / costalesDiarios);
                 double trabajadores = diasHombre / dias;
-                double tonelada = pesoTotal/1000;
+                resultadoPeso = pesoTotal + " Kg";
+                if(pesoTotal > 1000){
+                    resultadoPeso = pesoTotal/1000 + "t";
+                }
+
                 String[]camiones= medio_traslado(pesoTotal/1000);
 
                 if (camiones[0].equals("Trailer")){
@@ -94,14 +99,20 @@ public class RealEstimacion extends AppCompatActivity {
                     traslado = "1 "+ camiones[0];
                 }
 
+                if (trabajadores < 0.5) {
+                    trabajadores = 1;
+                }else{
+                   trabajadores = Math.ceil(trabajadores);
+                }
+
                 Intent intent = new Intent (this, ResultadosEstimacion.class);
                 intent.putExtra("fruto", tipoFruta);
                 intent.putExtra("produccion", valores);
                 intent.putExtra("valor", valorProduccion);
-                intent.putExtra("recolectores", (int) Math.ceil(trabajadores));
+                intent.putExtra("recolectores", (int) trabajadores);
                 intent.putExtra("costales", (int) Math.ceil(costales));
                 intent.putExtra("transporte", traslado);
-                intent.putExtra("tonelada", tonelada);
+                intent.putExtra("peso", resultadoPeso);
                 startActivity(intent);
             }else{
                 Toast.makeText(this, "Sin detecciones realizadas",

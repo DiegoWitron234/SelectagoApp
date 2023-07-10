@@ -26,12 +26,11 @@
         android:layout_marginLeft="30dp"
         android:layout_marginTop="30dp"
         android:textColor="@color/black"
-        android:text="Tipo De Fruto: "
+        android:text="Tipo de fruto: "
         android:textSize="25dp"
         />
 
     <TextView
-        android:id="@+id/txtEstimacionProduccion"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="left"
@@ -39,6 +38,16 @@
         android:layout_marginTop="30dp"
         android:textColor="@color/black"
         android:text="Estimación de producción: "
+        android:textSize="25dp"
+        />
+
+    <TextView
+        android:id="@+id/txtEstimacionProduccion"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="left"
+        android:layout_marginHorizontal="30dp"
+        android:textColor="@color/black"
         android:textSize="25dp"
         />
 
@@ -85,7 +94,7 @@
         android:layout_marginLeft="30dp"
         android:layout_marginTop="30dp"
         android:textColor="@color/black"
-        android:text="Número de transportes: "
+        android:text="Transporte: "
         android:textSize="25dp"
         />
     <TextView
