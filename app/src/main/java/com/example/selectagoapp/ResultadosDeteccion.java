@@ -56,7 +56,7 @@ public class ResultadosDeteccion extends AppCompatActivity {
         txtArboles.setText("Número de árboles: "+arboles);
         txtMuestra.setText("Árboles muestreados: "+muestra);
         txtDetectados.setText("Frutos Detectados: "+detecciones);
-        txtPromedio.setText("Frutos por árbol: "+promedio);
+        txtPromedio.setText("Promedio por árbol: "+promedio);
         txtEstimacion.setText(estimacion+" frutos");
     }
 
