@@ -1,6 +1,8 @@
 package com.example.selectagoapp
 
 import android.content.Intent
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.ActionBar
@@ -18,6 +20,7 @@ class MainActivity : AppCompatActivity() {
             //Poner el ícono al ActionBar
             actionBar.setIcon(R.drawable.tfl_logo)
             actionBar.setDisplayShowHomeEnabled(true)
+            actionBar.setBackgroundDrawable(ColorDrawable(Color.parseColor("#62aa00")))
         }
 
     }

@@ -6,6 +6,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
@@ -32,6 +34,7 @@ public class RealEstimacion extends AppCompatActivity {
             //Poner el ícono al ActionBar
             actionBar.setIcon(R.drawable.tfl_logo);
             actionBar.setDisplayShowHomeEnabled(true);
+            actionBar.setBackgroundDrawable(new ColorDrawable(Color.parseColor("#62aa00")));
         }
 
         // Instanciando elementos de la vista
@@ -49,7 +52,7 @@ public class RealEstimacion extends AppCompatActivity {
         // ArrayAdapter de Frutas
         adapterFrutas.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         opcionFrutas.setAdapter(adapterFrutas);
-        opcionFrutas.setPrompt("Tipo de fruto");
+        opcionFrutas.setBackgroundColor(Color.parseColor("#62aa00"));
         eventoOpcionArray(opcionFrutas);
     }
 

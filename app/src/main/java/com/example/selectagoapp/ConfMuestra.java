@@ -4,6 +4,8 @@ import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
@@ -29,6 +31,7 @@ public class ConfMuestra extends AppCompatActivity {
             //Poner el ícono al ActionBar
             actionBar.setIcon(R.drawable.tfl_logo);
             actionBar.setDisplayShowHomeEnabled(true);
+            actionBar.setBackgroundDrawable(new ColorDrawable(Color.parseColor("#62aa00")));
         }
 
         // Instanciando elementos de vista
@@ -44,9 +47,11 @@ public class ConfMuestra extends AppCompatActivity {
         ArrayAdapter<String> adapterPrecision = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, precision);
         // ArrayAdapter de Frutas
         adapterFrutas.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        opcionFrutas.setBackgroundColor(Color.parseColor("#62aa00"));
         opcionFrutas.setAdapter(adapterFrutas);
         // ArrayAdapter de Precision
         adapterPrecision.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        opcionPrecision.setBackgroundColor(Color.parseColor("#62aa00"));
         opcionPrecision.setAdapter(adapterPrecision);
         // Estableciendo evento Listener en los ArrayAdapters
         listenerArrayAdapter(opcionFrutas, opcionPrecision);

@@ -60,8 +60,10 @@
             android:textAlignment="center"
             android:inputType="numberDecimal"
             android:layout_marginTop="20dp"
+            android:textColor="@color/black"
             android:layout_toEndOf="@id/tvPrecio"
             android:layout_marginEnd="20dp"
+            android:backgroundTint="@color/verde"
             />
 
         <TextView
@@ -85,6 +87,8 @@
             android:layout_marginTop="20dp"
             android:layout_marginEnd="20dp"
             android:layout_marginBottom="20dp"
+            android:textColor="@color/black"
+            android:backgroundTint="@color/verde"
             android:layout_toEndOf="@id/tvCosecha"
             android:inputType="number"
             android:textAlignment="center"

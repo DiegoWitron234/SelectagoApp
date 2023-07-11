@@ -4,6 +4,8 @@ import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
@@ -25,6 +27,7 @@ public class ResultadosEstimacion extends AppCompatActivity {
             //Poner el ícono al ActionBar
             actionBar.setIcon(R.drawable.tfl_logo);
             actionBar.setDisplayShowHomeEnabled(true);
+            actionBar.setBackgroundDrawable(new ColorDrawable(Color.parseColor("#62aa00")));
         }
 
         txtFruto = findViewById(R.id.txtTipoFruto);

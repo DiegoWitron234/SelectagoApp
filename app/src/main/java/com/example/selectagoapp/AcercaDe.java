@@ -4,6 +4,8 @@ import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
@@ -21,6 +23,7 @@ public class AcercaDe extends AppCompatActivity {
             //Poner el ícono al ActionBar
             actionBar.setIcon(R.drawable.tfl_logo);
             actionBar.setDisplayShowHomeEnabled(true);
+            actionBar.setBackgroundDrawable(new ColorDrawable(Color.parseColor("#62aa00")));
         }
 
     }

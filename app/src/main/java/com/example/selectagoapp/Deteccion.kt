@@ -4,6 +4,7 @@ import android.Manifest
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.*
+import android.graphics.drawable.ColorDrawable
 import android.os.Build
 import android.os.Bundle
 import android.provider.MediaStore
@@ -51,6 +52,7 @@ class Deteccion : AppCompatActivity() {
             //Poner el ícono al ActionBar
             actionBar.setIcon(R.drawable.tfl_logo)
             actionBar.setDisplayShowHomeEnabled(true)
+            actionBar.setBackgroundDrawable(ColorDrawable(Color.parseColor("#62aa00")))
         }
 
         permisoCamera()

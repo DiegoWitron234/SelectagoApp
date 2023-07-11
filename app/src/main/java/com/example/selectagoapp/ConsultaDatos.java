@@ -1,5 +1,6 @@
 package com.example.selectagoapp;
 
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.annotation.SuppressLint;
@@ -8,6 +9,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.graphics.Typeface;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
@@ -47,6 +49,14 @@ public class ConsultaDatos extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_consulta_datos);
+        ActionBar actionBar = getSupportActionBar();
+
+        if (actionBar != null) {
+            //Poner el ícono al ActionBar
+            actionBar.setIcon(R.drawable.tfl_logo);
+            actionBar.setDisplayShowHomeEnabled(true);
+            actionBar.setBackgroundDrawable(new ColorDrawable(Color.parseColor("#62aa00")));
+        }
         // Instanciendo elementos de la vista
         Spinner opcionFrutas = findViewById(R.id.spnTipoFrutoCd);
         fechaDesde = findViewById(R.id.inDesde);
@@ -63,6 +73,7 @@ public class ConsultaDatos extends AppCompatActivity {
         // Configuración de Spinner Frutas
         adapterFrutas.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         aAFrutos.setAdapter(adapterFrutas);
+        aAFrutos.setBackgroundColor(Color.parseColor("#62aa00"));
         listenerArrayAdapter(aAFrutos);
     }
 
