@@ -22,6 +22,7 @@ public class AcercaDe extends AppCompatActivity {
             actionBar.setIcon(R.drawable.tfl_logo);
             actionBar.setDisplayShowHomeEnabled(true);
         }
+
     }
 
     /*
